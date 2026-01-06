@@ -3,6 +3,7 @@ import MainLayout from '../layouts/MainLayout';
 import Login from '../features/auth/Login';
 import Dashboard from '../features/dashboard/Dashboard';
 import MUIComponents from '../features/mui-demo/MUIComponents';
+import EnvDemo from '../features/env-demo/EnvDemo';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: 'mui-demo',
         element: <MUIComponents />,
+      },
+      {
+        path: 'env-demo',
+        element: <EnvDemo />,
       },
       {
         path: 'rag',

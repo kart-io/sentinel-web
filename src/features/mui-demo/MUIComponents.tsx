@@ -36,6 +36,102 @@ import {
   TrendingUp,
   TrendingDown,
 } from '@mui/icons-material';
+import { DataTable, SimpleTable, type Column } from '@/components/ui';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  joinDate: string;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+}
+
+const userColumns: Column<User>[] = [
+  { id: 'name', label: '姓名', minWidth: 100 },
+  { id: 'email', label: '邮箱', minWidth: 150 },
+  { id: 'role', label: '角色', minWidth: 100 },
+  { id: 'status', label: '状态', minWidth: 80 },
+  { id: 'joinDate', label: '加入日期', minWidth: 120 },
+];
+
+const productColumns: Column<Product>[] = [
+  { id: 'name', label: '产品名称', minWidth: 150 },
+  { id: 'category', label: '分类', minWidth: 100 },
+  {
+    id: 'price',
+    label: '价格',
+    minWidth: 100,
+    align: 'right',
+    format: (value: unknown) => `¥${Number(value).toFixed(2)}`,
+  },
+  {
+    id: 'stock',
+    label: '库存',
+    minWidth: 80,
+    align: 'right',
+    format: (value: unknown) => Number(value).toLocaleString(),
+  },
+];
+
+const userData: User[] = [
+  {
+    id: 1,
+    name: '张三',
+    email: 'zhangsan@example.com',
+    role: '管理员',
+    status: '激活',
+    joinDate: '2024-01-15',
+  },
+  {
+    id: 2,
+    name: '李四',
+    email: 'lisi@example.com',
+    role: '编辑',
+    status: '激活',
+    joinDate: '2024-02-20',
+  },
+  {
+    id: 3,
+    name: '王五',
+    email: 'wangwu@example.com',
+    role: '用户',
+    status: '停用',
+    joinDate: '2024-03-10',
+  },
+  {
+    id: 4,
+    name: '赵六',
+    email: 'zhaoliu@example.com',
+    role: '编辑',
+    status: '激活',
+    joinDate: '2024-04-05',
+  },
+  {
+    id: 5,
+    name: '孙七',
+    email: 'sunqi@example.com',
+    role: '用户',
+    status: '激活',
+    joinDate: '2024-05-12',
+  },
+];
+
+const productData: Product[] = [
+  { id: 1, name: 'iPhone 15 Pro', category: '手机', price: 7999, stock: 120 },
+  { id: 2, name: 'MacBook Pro 16"', category: '电脑', price: 19999, stock: 45 },
+  { id: 3, name: 'AirPods Pro', category: '耳机', price: 1999, stock: 200 },
+  { id: 4, name: 'iPad Air', category: '平板', price: 4799, stock: 80 },
+  { id: 5, name: 'Apple Watch', category: '手表', price: 2999, stock: 150 },
+];
 
 export default function MUIComponents() {
   return (
@@ -49,7 +145,7 @@ export default function MUIComponents() {
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
         {/* 统计卡片 */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -75,7 +171,7 @@ export default function MUIComponents() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -101,7 +197,7 @@ export default function MUIComponents() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -127,7 +223,7 @@ export default function MUIComponents() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -154,7 +250,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* Alerts */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Stack spacing={2}>
             <Alert severity="success">
               <AlertTitle>成功</AlertTitle>
@@ -176,7 +272,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 进度条 */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper elevation={2} sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               项目进度
@@ -214,7 +310,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 表单示例 */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -242,7 +338,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 用户列表 */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -302,7 +398,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 按钮示例 */}
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Paper elevation={2} sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               按钮组件
@@ -346,6 +442,33 @@ export default function MUIComponents() {
               <Chip avatar={<Avatar>M</Avatar>} label="头像芯片" />
             </Stack>
           </Paper>
+        </Grid>
+
+        {/* DataTable 示例 - 用户表格 */}
+        <Grid size={{ xs: 12 }}>
+          <DataTable
+            columns={userColumns}
+            rows={userData}
+            title="用户管理表格"
+            selectable
+            sortable
+            onSelectionChange={(selected) => {
+              console.log('选中的用户:', selected);
+            }}
+            onRowClick={(row) => {
+              console.log('点击的用户:', row);
+            }}
+          />
+        </Grid>
+
+        {/* SimpleTable 示例 - 产品表格 */}
+        <Grid size={{ xs: 12 }}>
+          <Box>
+            <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
+              产品列表（简单表格）
+            </Typography>
+            <SimpleTable columns={productColumns} rows={productData} stickyHeader maxHeight={400} />
+          </Box>
         </Grid>
       </Grid>
 
