@@ -4,15 +4,24 @@ import Login from '../features/auth/Login';
 import Dashboard from '../features/dashboard/Dashboard';
 import MUIComponents from '../features/mui-demo/MUIComponents';
 import EnvDemo from '../features/env-demo/EnvDemo';
+import { ProtectedRoute, PublicRoute } from '@/components/common/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

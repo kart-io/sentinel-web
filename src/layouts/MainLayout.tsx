@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Badge } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Badge, Modal } from 'antd';
 import type { MenuProps } from 'antd';
 import {
   LayoutDashboard,
@@ -13,6 +13,7 @@ import {
   Menu as MenuIcon,
 } from 'lucide-react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
 
 const { Header, Sider, Content } = Layout;
 
@@ -20,12 +21,23 @@ export default function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuthStore();
 
   const menuItems: MenuProps['items'] = [
     {
       key: '/dashboard',
       icon: <LayoutDashboard size={18} />,
       label: '仪表板',
+    },
+    {
+      key: '/mui-demo',
+      icon: <Database size={18} />,
+      label: 'MUI 组件',
+    },
+    {
+      key: '/env-demo',
+      icon: <Settings size={18} />,
+      label: '环境配置',
     },
     {
       key: '/rag',
@@ -77,7 +89,16 @@ export default function MainLayout() {
 
   const handleUserMenuClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
-      navigate('/login');
+      Modal.confirm({
+        title: '退出登录',
+        content: '确定要退出登录吗？',
+        okText: '确定',
+        cancelText: '取消',
+        onOk: () => {
+          logout();
+          navigate('/login', { replace: true });
+        },
+      });
     } else if (key === 'profile') {
       navigate('/profile');
     } else if (key === 'settings') {
@@ -131,11 +152,12 @@ export default function MainLayout() {
               <div className="flex items-center gap-2 cursor-pointer">
                 <Avatar
                   size="default"
+                  src={user?.avatar}
                   style={{ backgroundColor: '#1890ff' }}
                 >
-                  Admin
+                  {user?.username?.charAt(0).toUpperCase() || 'U'}
                 </Avatar>
-                <span className="text-sm font-medium">管理员</span>
+                <span className="text-sm font-medium">{user?.username || '用户'}</span>
               </div>
             </Dropdown>
           </div>
