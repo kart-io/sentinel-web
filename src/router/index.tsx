@@ -4,6 +4,7 @@ import Login from '../features/auth/Login';
 import Dashboard from '../features/dashboard/Dashboard';
 import MUIComponents from '../features/mui-demo/MUIComponents';
 import EnvDemo from '../features/env-demo/EnvDemo';
+import RAGPage from '../features/rag/RAGPage';
 import { ProtectedRoute, PublicRoute } from '@/components/common/ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -41,12 +42,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'rag',
-        element: (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-gray-700">RAG 知识库</h2>
-            <p className="text-gray-500 mt-2">功能开发中...</p>
-          </div>
-        ),
+        element: <RAGPage />,
       },
       {
         path: 'user-center',
