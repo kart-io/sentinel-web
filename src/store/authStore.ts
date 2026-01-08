@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
+import { setSentryUser, clearSentryUser } from '@/lib/sentry';
+import { createZustandSecureStorage } from '@/utils/secureStorage';
 
 /**
  * 用户信息接口
@@ -40,6 +42,13 @@ export const useAuthStore = create<AuthState>()(
           user,
           isAuthenticated: true,
         });
+
+        // 设置 Sentry 用户信息
+        setSentryUser({
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        });
       },
 
       logout: () => {
@@ -48,21 +57,34 @@ export const useAuthStore = create<AuthState>()(
           user: null,
           isAuthenticated: false,
         });
+
+        // 清除 Sentry 用户信息
+        clearSentryUser();
       },
 
       updateUser: (userData: Partial<User>) => {
-        set((state) => ({
-          user: state.user ? { ...state.user, ...userData } : null,
-        }));
+        set((state) => {
+          const updatedUser = state.user ? { ...state.user, ...userData } : null;
+
+          // 更新 Sentry 用户信息
+          if (updatedUser) {
+            setSentryUser({
+              id: updatedUser.id,
+              username: updatedUser.username,
+              email: updatedUser.email,
+            });
+          }
+
+          return {
+            user: updatedUser,
+          };
+        });
       },
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({
-        token: state.token,
-        user: state.user,
-        isAuthenticated: state.isAuthenticated,
-      }),
+      // 使用加密存储
+      storage: createJSONStorage(() => createZustandSecureStorage() as StateStorage),
     }
   )
 );

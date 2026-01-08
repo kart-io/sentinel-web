@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Modal, Form, Input, Tag, Space, Button, message, Spin } from 'antd';
 import { EditOutlined, SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { ragService } from '@/services/ragService';
@@ -25,13 +25,7 @@ export default function DocumentViewEditModal({
   const [saving, setSaving] = useState(false);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (open && documentId) {
-      fetchDocument();
-    }
-  }, [open, documentId]);
-
-  const fetchDocument = async () => {
+  const fetchDocument = useCallback(async () => {
     setLoading(true);
     try {
       const doc = await ragService.getDocument(documentId);
@@ -46,7 +40,13 @@ export default function DocumentViewEditModal({
     } finally {
       setLoading(false);
     }
-  };
+  }, [documentId, form]);
+
+  useEffect(() => {
+    if (open && documentId) {
+      fetchDocument();
+    }
+  }, [open, documentId, fetchDocument]);
 
   const handleSave = async () => {
     try {

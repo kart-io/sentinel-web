@@ -1,4 +1,5 @@
 import { getEnvConfig } from '@/config/env';
+import { request } from '@/lib/axios';
 import type {
   KnowledgeBase,
   Document,
@@ -12,7 +13,6 @@ import type {
 } from '@/types/rag';
 
 const config = getEnvConfig();
-const API_BASE_URL = config.apiBaseUrl;
 
 // Mock data for development
 const mockKnowledgeBases: KnowledgeBase[] = [
@@ -61,9 +61,7 @@ export const ragService = {
       return mockKnowledgeBases;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/knowledge-bases`);
-    if (!response.ok) throw new Error('Failed to fetch knowledge bases');
-    return response.json();
+    return request.get<KnowledgeBase[]>('/rag/knowledge-bases');
   },
 
   // 创建知识库
@@ -82,13 +80,7 @@ export const ragService = {
       return newKB;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/knowledge-bases`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Failed to create knowledge base');
-    return response.json();
+    return request.post<KnowledgeBase>('/rag/knowledge-bases', data);
   },
 
   // 删除知识库
@@ -102,10 +94,7 @@ export const ragService = {
       return;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/knowledge-bases/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) throw new Error('Failed to delete knowledge base');
+    return request.delete<void>(`/rag/knowledge-bases/${id}`);
   },
 
   // 获取知识库中的文档
@@ -115,9 +104,7 @@ export const ragService = {
       return mockDocuments;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/knowledge-bases/${knowledgeBaseId}/documents`);
-    if (!response.ok) throw new Error('Failed to fetch documents');
-    return response.json();
+    return request.get<Document[]>(`/rag/knowledge-bases/${knowledgeBaseId}/documents`);
   },
 
   // 上传文档
@@ -136,13 +123,7 @@ export const ragService = {
       return newDoc;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/documents`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Failed to upload document');
-    return response.json();
+    return request.post<Document>('/rag/documents', data);
   },
 
   // 删除文档
@@ -156,10 +137,7 @@ export const ragService = {
       return;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/documents/${documentId}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) throw new Error('Failed to delete document');
+    return request.delete<void>(`/rag/documents/${documentId}`);
   },
 
   // RAG 查询
@@ -190,13 +168,7 @@ export const ragService = {
       };
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Failed to query RAG');
-    return response.json();
+    return request.post<QueryResponse>('/rag/query', data);
   },
 
   // 获取知识库详情
@@ -225,9 +197,7 @@ export const ragService = {
       };
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/knowledge-bases/${id}/detail`);
-    if (!response.ok) throw new Error('Failed to fetch knowledge base detail');
-    return response.json();
+    return request.get<KnowledgeBaseDetail>(`/rag/knowledge-bases/${id}/detail`);
   },
 
   // 更新文档
@@ -248,13 +218,7 @@ export const ragService = {
       return updatedDoc;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/documents/${documentId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Failed to update document');
-    return response.json();
+    return request.put<Document>(`/rag/documents/${documentId}`, data);
   },
 
   // 批量上传文档
@@ -276,13 +240,7 @@ export const ragService = {
       return newDocs;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/documents/batch`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error('Failed to batch upload documents');
-    return response.json();
+    return request.post<Document[]>('/rag/documents/batch', data);
   },
 
   // 获取单个文档详情
@@ -294,8 +252,6 @@ export const ragService = {
       return doc;
     }
 
-    const response = await fetch(`${API_BASE_URL}/rag/documents/${documentId}`);
-    if (!response.ok) throw new Error('Failed to fetch document');
-    return response.json();
+    return request.get<Document>(`/rag/documents/${documentId}`);
   },
 };

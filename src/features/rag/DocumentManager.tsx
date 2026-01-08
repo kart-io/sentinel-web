@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   Button,
@@ -40,13 +40,7 @@ export default function DocumentManager({ knowledgeBases }: DocumentManagerProps
   const [fetchLoading, setFetchLoading] = useState(false);
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (selectedKB) {
-      fetchDocuments();
-    }
-  }, [selectedKB]);
-
-  const fetchDocuments = async () => {
+  const fetchDocuments = useCallback(async () => {
     if (!selectedKB) return;
 
     setFetchLoading(true);
@@ -59,7 +53,13 @@ export default function DocumentManager({ knowledgeBases }: DocumentManagerProps
     } finally {
       setFetchLoading(false);
     }
-  };
+  }, [selectedKB]);
+
+  useEffect(() => {
+    if (selectedKB) {
+      fetchDocuments();
+    }
+  }, [selectedKB, fetchDocuments]);
 
   const handleUpload = async (values: { title: string; content: string }) => {
     if (!selectedKB) {

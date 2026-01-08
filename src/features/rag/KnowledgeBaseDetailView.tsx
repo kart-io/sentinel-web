@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, Row, Col, Statistic, Tag, List, Spin, Button, Space, Typography } from 'antd';
 import {
   FileTextOutlined,
@@ -24,11 +24,7 @@ export default function KnowledgeBaseDetailView({
   const [detail, setDetail] = useState<KnowledgeBaseDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDetail();
-  }, [knowledgeBaseId]);
-
-  const fetchDetail = async () => {
+  const fetchDetail = useCallback(async () => {
     setLoading(true);
     try {
       const data = await ragService.getKnowledgeBaseDetail(knowledgeBaseId);
@@ -38,7 +34,11 @@ export default function KnowledgeBaseDetailView({
     } finally {
       setLoading(false);
     }
-  };
+  }, [knowledgeBaseId]);
+
+  useEffect(() => {
+    fetchDetail();
+  }, [fetchDetail]);
 
   if (loading) {
     return (

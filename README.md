@@ -26,6 +26,12 @@ Sentinel-X 项目的前端应用程序,基于 React + TypeScript + Vite 构建�
 - **React Router v6+** - 客户端路由
 - **Axios** - HTTP 客户端,包含 JWT Bearer Token 拦截器
 
+### 安全和监控
+
+- **Sentry** - 错误追踪和性能监控
+- **AES 加密存储** - Token 和敏感数据加密保护
+- **crypto-js** - 客户端加密库
+
 ## 快速开始
 
 ### 环境要求
@@ -39,6 +45,36 @@ Sentinel-X 项目的前端应用程序,基于 React + TypeScript + Vite 构建�
 cd sentinel-web
 npm install
 ```
+
+### 环境配置
+
+复制环境配置文件并根据需要修改：
+
+```bash
+# 开发环境
+cp .env.local.example .env.local
+
+# 或直接使用预设的开发环境配置
+# .env.development 已包含开发环境默认配置
+```
+
+**重要配置项**：
+
+```bash
+# API 配置
+VITE_API_BASE_URL=http://localhost:3000/api
+VITE_API_TIMEOUT=30000
+
+# Sentry 配置（可选）
+VITE_SENTRY_DSN=your-sentry-dsn
+VITE_SENTRY_ENABLED=false
+
+# 加密存储配置（生产环境推荐）
+VITE_ENABLE_STORAGE_ENCRYPTION=true
+VITE_ENCRYPTION_KEY=your-encryption-key
+```
+
+详细配置说明请查看 [环境配置文档](./docs/ENVIRONMENT.md)。
 
 ### 开发模式
 
@@ -60,6 +96,16 @@ npm run build
 
 ```bash
 npm run preview
+```
+
+### 代码检查
+
+```bash
+# ESLint 检查
+npm run lint
+
+# TypeScript 类型检查
+npm run type-check
 ```
 
 ## 项目结构
@@ -97,9 +143,17 @@ sentinel-web/
 
 ## 文档
 
-- [架构设计](./docs/architecture.md) - 应用架构和设计原则
-- [开发指南](./docs/development.md) - 开发规范和最佳实践
-- [API 集成](./docs/api-integration.md) - 后端 API 集成说明
+### 开发文档
+
+- [开发指南](./docs/DEVELOPMENT.md) - 完整的开发规范和最佳实践
+- [环境配置](./docs/ENVIRONMENT.md) - 环境变量配置说明
+
+### 功能文档
+
+- [Sentry 集成](./docs/SENTRY.md) - 错误追踪和性能监控使用指南
+- [Sentry 集成总结](./docs/SENTRY_INTEGRATION.md) - Sentry 集成完成总结
+- [加密存储](./docs/ENCRYPTED_STORAGE.md) - Token 加密存储使用指南
+- [加密存储集成总结](./docs/ENCRYPTED_STORAGE_INTEGRATION.md) - 加密存储集成完成总结
 
 ## 功能模块
 

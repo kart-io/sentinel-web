@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Tabs, message } from 'antd';
 import { DatabaseOutlined, FileTextOutlined, SearchOutlined } from '@ant-design/icons';
 import RAGQuery from './RAGQuery';
@@ -10,7 +10,7 @@ import type { KnowledgeBase } from '@/types/rag';
 export default function RAGPage() {
   const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
 
-  const fetchKnowledgeBases = async () => {
+  const fetchKnowledgeBases = useCallback(async () => {
     try {
       const kbs = await ragService.getKnowledgeBases();
       setKnowledgeBases(kbs);
@@ -18,11 +18,12 @@ export default function RAGPage() {
       message.error('获取知识库列表失败');
       console.error('Fetch error:', error);
     }
-  };
+  }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchKnowledgeBases();
-  }, []);
+  }, [fetchKnowledgeBases]);
 
   const items = [
     {
