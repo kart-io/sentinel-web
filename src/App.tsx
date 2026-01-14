@@ -1,20 +1,21 @@
 import { RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, App as AntdApp } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { router } from './router';
 import { muiTheme } from './theme/muiTheme';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { MessageHolder } from './utils/messageHolder';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 3,
-      staleTime: 5 * 60 * 1000, // 5分钟
-      gcTime: 10 * 60 * 1000, // 10分钟（以前叫 cacheTime）
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     },
     mutations: {
@@ -33,12 +34,28 @@ function App() {
             locale={zhCN}
             theme={{
               token: {
-                colorPrimary: '#1890ff',
-                borderRadius: 8,
+                colorPrimary: '#0960bd',
+                borderRadius: 2,
+                fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
               },
+              components: {
+                 Button: {
+                   borderRadius: 2,
+                   controlHeight: 32,
+                 },
+                 Input: {
+                   borderRadius: 2,
+                 },
+                 Card: {
+                   borderRadius: 2,
+                 }
+              }
             }}
           >
-            <RouterProvider router={router} />
+            <AntdApp>
+              <MessageHolder />
+              <RouterProvider router={router} />
+            </AntdApp>
           </ConfigProvider>
         </ThemeProvider>
       </QueryClientProvider>

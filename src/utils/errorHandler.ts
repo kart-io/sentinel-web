@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { globalMessage } from '@/utils/messageHolder';
 import { captureException, addBreadcrumb } from '@/lib/sentry';
 import type { SeverityLevel } from '@sentry/react';
 
@@ -63,9 +63,9 @@ export function handleError(error: Error | unknown, context?: ErrorContext) {
 
   // 根据错误级别决定是否显示用户提示
   if (errorLevel === ErrorLevel.ERROR || errorLevel === ErrorLevel.FATAL) {
-    message.error(getUserFriendlyMessage(actualError, errorType));
+    globalMessage.error(getUserFriendlyMessage(actualError, errorType));
   } else if (errorLevel === ErrorLevel.WARNING) {
-    message.warning(getUserFriendlyMessage(actualError, errorType));
+    globalMessage.warning(getUserFriendlyMessage(actualError, errorType));
   }
 
   // 上报到 Sentry

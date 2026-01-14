@@ -1,4 +1,4 @@
-import { Input, Select, Button, Space, message } from 'antd';
+import { Input, Select, Button, Space, App } from 'antd';
 import { Code2, Copy, Check, Play, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
@@ -52,6 +52,7 @@ export function CodeEditor({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
+  const { message } = App.useApp();
 
   useEffect(() => {
     if (textareaRef.current && lineNumbersRef.current && showLineNumbers) {

@@ -7,7 +7,7 @@ import {
   Modal,
   Form,
   Input,
-  message,
+  App,
   Tag,
   Popconfirm,
   Typography,
@@ -36,6 +36,7 @@ export default function KnowledgeBaseManager({ knowledgeBases, onUpdate }: Knowl
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedKBId, setSelectedKBId] = useState<string | null>(null);
+  const { message } = App.useApp();
 
   const handleCreate = async (values: { name: string; description: string }) => {
     setLoading(true);

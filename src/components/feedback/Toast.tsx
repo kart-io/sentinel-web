@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { globalMessage } from '@/utils/messageHolder';
 import { CheckCircle, XCircle, AlertCircle, Info, Loader2, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import React from 'react';
@@ -15,59 +15,36 @@ interface ToastInstance {
 
 const Toast: ToastInstance = {
   success(content: string, duration = 3) {
-    message.success({
-      content,
-      duration,
-      icon: <CheckCircle size={20} className="text-green-500" />,
-    });
+    globalMessage.success(content, duration);
   },
 
   error(content: string, duration = 4) {
-    message.error({
-      content,
-      duration,
-      icon: <XCircle size={20} className="text-red-500" />,
-    });
+    globalMessage.error(content, duration);
   },
 
   warning(content: string, duration = 3) {
-    message.warning({
-      content,
-      duration,
-      icon: <AlertCircle size={20} className="text-yellow-500" />,
-    });
+    globalMessage.warning(content, duration);
   },
 
   info(content: string, duration = 3) {
-    message.info({
-      content,
-      duration,
-      icon: <Info size={20} className="text-blue-500" />,
-    });
+    globalMessage.info(content, duration);
   },
 
   loading(content: string) {
-    message.loading({
-      content,
-      icon: <Loader2 size={20} className="animate-spin text-blue-500" />,
-      duration: 0,
-    });
+    globalMessage.loading(content, 0);
   },
 
   destroy(key?: string) {
-    if (key) {
-      message.destroy(key);
-    } else {
-      message.destroy();
-    }
+    globalMessage.destroy(key);
   },
 
-  config(options: { duration?: number; maxCount?: number; top?: number }) {
-    message.config(options);
+  config(_options: { duration?: number; maxCount?: number; top?: number }) {
+    // Configuration is handled by Ant Design App component
+    console.warn('[Toast] config() is deprecated. Use Ant Design App component configuration instead.');
   },
 };
 
-Toast.destroy = () => message.destroy();
+Toast.destroy = (key?: string) => globalMessage.destroy(key);
 
 export default Toast;
 

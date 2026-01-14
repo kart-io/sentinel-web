@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Tabs, message } from 'antd';
+import { Tabs, App } from 'antd';
 import { DatabaseOutlined, FileTextOutlined, SearchOutlined } from '@ant-design/icons';
 import RAGQuery from './RAGQuery';
 import KnowledgeBaseManager from './KnowledgeBaseManager';
@@ -9,6 +9,7 @@ import type { KnowledgeBase } from '@/types/rag';
 
 export default function RAGPage() {
   const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
+  const { message } = App.useApp();
 
   const fetchKnowledgeBases = useCallback(async () => {
     try {

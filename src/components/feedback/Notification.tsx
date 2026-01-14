@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface NotificationConfig {

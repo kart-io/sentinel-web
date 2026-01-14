@@ -7,7 +7,7 @@ import {
   Modal,
   Form,
   Input,
-  message,
+  App,
   Tag,
   Popconfirm,
   Select,
@@ -39,6 +39,7 @@ export default function DocumentManager({ knowledgeBases }: DocumentManagerProps
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
+  const { message } = App.useApp();
 
   const fetchDocuments = useCallback(async () => {
     if (!selectedKB) return;

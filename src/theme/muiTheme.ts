@@ -3,9 +3,9 @@ import { createTheme } from '@mui/material/styles';
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: '#1890ff',
+      main: '#0960bd',
       light: '#40a9ff',
-      dark: '#096dd9',
+      dark: '#003a8c',
     },
     secondary: {
       main: '#52c41a',
@@ -19,18 +19,19 @@ export const muiTheme = createTheme({
       main: '#faad14',
     },
     info: {
-      main: '#1890ff',
+      main: '#0960bd',
     },
     success: {
       main: '#52c41a',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#f0f2f5',
       paper: '#ffffff',
     },
   },
   typography: {
     fontFamily: [
+      "'Inter'",
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -39,6 +40,7 @@ export const muiTheme = createTheme({
       'Arial',
       'sans-serif',
     ].join(','),
+    fontSize: 14,
     h1: {
       fontSize: '2.5rem',
       fontWeight: 600,
@@ -65,22 +67,42 @@ export const muiTheme = createTheme({
     },
   },
   shape: {
-    borderRadius: 8,
+    borderRadius: 2,
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: 8,
+          borderRadius: 2,
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          borderRadius: 2,
+          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        rounded: {
+          borderRadius: 2,
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+          },
         },
       },
     },

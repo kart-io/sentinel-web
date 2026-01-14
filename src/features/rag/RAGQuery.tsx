@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Input, Button, Space, Typography, Spin, Tag, Collapse, Select, message } from 'antd';
+import { Card, Input, Button, Space, Typography, Spin, Tag, Collapse, Select, App } from 'antd';
 import { SendOutlined, FileTextOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { ragService } from '@/services/ragService';
 import type { KnowledgeBase, QueryResponse } from '@/types/rag';
@@ -17,6 +17,7 @@ export default function RAGQuery({ knowledgeBases }: RAGQueryProps) {
   const [selectedKB, setSelectedKB] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<QueryResponse | null>(null);
+  const { message } = App.useApp();
 
   const handleQuery = async () => {
     if (!query.trim()) {

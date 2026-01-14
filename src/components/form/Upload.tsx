@@ -1,4 +1,4 @@
-import { Upload as AntUpload, Button, Progress, Space, Image, message } from 'antd';
+import { Upload as AntUpload, Button, Progress, Space, Image, App } from 'antd';
 import type { UploadProps as AntUploadProps, UploadFile } from 'antd';
 import { UploadCloud, File, X, Download } from 'lucide-react';
 import { useState } from 'react';
@@ -40,6 +40,7 @@ export function Upload({
   ...props
 }: UploadProps) {
   const [fileList, setFileList] = useState<UploadFileExtended[]>(value || []);
+  const { message } = App.useApp();
 
   const beforeUpload = (file: File) => {
     const isLtMaxSize = file.size / 1024 / 1024 < maxSize;

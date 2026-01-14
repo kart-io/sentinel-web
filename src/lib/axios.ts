@@ -4,7 +4,7 @@
  */
 
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { message } from 'antd';
+import { globalMessage } from '@/utils/messageHolder';
 import { getEnvConfig } from '@/config/env';
 import { useAuthStore } from '@/store/authStore';
 import { addBreadcrumb } from './sentry';
@@ -122,7 +122,7 @@ apiClient.interceptors.response.use(
       switch (status) {
         case 401: {
           // 未授权，清除认证信息并跳转到登录页
-          message.error('登录已过期，请重新登录');
+          globalMessage.error('登录已过期，请重新登录');
           useAuthStore.getState().logout();
 
           // 避免在登录页重复跳转
@@ -133,30 +133,30 @@ apiClient.interceptors.response.use(
         }
 
         case 403: {
-          message.error('没有权限访问该资源');
+          globalMessage.error('没有权限访问该资源');
           break;
         }
 
         case 404: {
-          message.error('请求的资源不存在');
+          globalMessage.error('请求的资源不存在');
           break;
         }
 
         case 500: {
-          message.error('服务器错误，请稍后重试');
+          globalMessage.error('服务器错误，请稍后重试');
           break;
         }
 
         case 502:
         case 503: {
-          message.error('服务暂时不可用，请稍后重试');
+          globalMessage.error('服务暂时不可用，请稍后重试');
           break;
         }
 
         default: {
           // 尝试从响应中获取错误消息
           const errorMessage = (data as { message?: string })?.message || '请求失败';
-          message.error(errorMessage);
+          globalMessage.error(errorMessage);
         }
       }
 
@@ -167,11 +167,11 @@ apiClient.interceptors.response.use(
       });
     } else if (error.request) {
       // 请求已发出但没有收到响应
-      message.error('网络连接失败，请检查网络设置');
+      globalMessage.error('网络连接失败，请检查网络设置');
       console.error('❌ Network Error:', error.request);
     } else {
       // 请求配置出错
-      message.error('请求配置错误');
+      globalMessage.error('请求配置错误');
       console.error('❌ Request Setup Error:', error.message);
     }
 

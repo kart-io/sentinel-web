@@ -1,4 +1,4 @@
-import { Form, Input, Button, message, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, App } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
@@ -17,6 +17,7 @@ export default function Login() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const login = useAuthStore((state) => state.login);
+  const { message } = App.useApp();
 
   const onFinish = async (values: LoginFormValues) => {
     setLoading(true);

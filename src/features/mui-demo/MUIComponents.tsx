@@ -2,7 +2,7 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
+  GridLegacy as Grid,
   Card,
   CardContent,
   CardActions,
@@ -145,7 +145,7 @@ export default function MUIComponents() {
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
         {/* 统计卡片 */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -171,7 +171,7 @@ export default function MUIComponents() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -197,7 +197,7 @@ export default function MUIComponents() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -223,7 +223,7 @@ export default function MUIComponents() {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card elevation={3}>
             <CardContent>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -250,7 +250,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* Alerts */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Stack spacing={2}>
             <Alert severity="success">
               <AlertTitle>成功</AlertTitle>
@@ -272,7 +272,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 进度条 */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Paper elevation={2} sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               项目进度
@@ -310,7 +310,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 表单示例 */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -338,7 +338,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 用户列表 */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card elevation={2}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -398,7 +398,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* 按钮示例 */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <Paper elevation={2} sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               按钮组件
@@ -445,7 +445,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* DataTable 示例 - 用户表格 */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <DataTable
             columns={userColumns}
             rows={userData}
@@ -462,7 +462,7 @@ export default function MUIComponents() {
         </Grid>
 
         {/* SimpleTable 示例 - 产品表格 */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <Box>
             <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
               产品列表（简单表格）

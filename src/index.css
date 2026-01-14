@@ -1,63 +1,678 @@
 @import 'tailwindcss';
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ============================================
+ * CSS 变量系统 - 基于 Vben Admin Design Tokens
+ * ============================================ */
+:root {
+  /* Popup z-index */
+  --popup-z-index: 2000;
+
+  /* Font Family */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* 基础背景色 */
+  --background: 0 0% 100%;
+  --background-deep: 216 20.11% 95.47%;
+  --foreground: 210 6% 21%;
+
+  /* 卡片背景色 */
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+
+  /* Popover 背景色 */
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+
+  /* Muted 背景色 */
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+
+  /* 主题色 */
+  --primary: 212 100% 45%;
+  --primary-foreground: 0 0% 98%;
+
+  /* Destructive */
+  --destructive: 359.33 100% 65.1%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Info */
+  --info: 240, 5%, 96%;
+  --info-foreground: 220, 4%, 58%;
+
+  /* Success */
+  --success: 144 57% 58%;
+  --success-foreground: 0 0% 98%;
+
+  /* Warning */
+  --warning: 42 84% 61%;
+  --warning-foreground: 0 0% 98%;
+
+  /* Secondary */
+  --secondary: 240 5% 96%;
+  --secondary-foreground: 240 6% 10%;
+
+  /* Accent */
+  --accent: 240 5% 96%;
+  --accent-dark: 216 14% 93%;
+  --accent-darker: 216 11% 91%;
+  --accent-lighter: 240 0% 98%;
+  --accent-hover: 200deg 10% 90%;
+  --accent-foreground: 240 6% 10%;
+
+  /* Heavy color */
+  --heavy: 192deg 9.43% 89.61%;
+  --heavy-foreground: var(--accent-foreground);
+
+  /* Border */
+  --border: 240 5.9% 90%;
+
+  /* Input */
+  --input: 240deg 5.88% 90%;
+  --input-placeholder: 217 10.6% 65%;
+  --input-background: 0 0% 100%;
+
+  /* Ring */
+  --ring: 222.2 84% 4.9%;
+
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* Overlay */
+  --overlay: 0 0% 0% / 45%;
+  --overlay-content: 0 0% 95% / 45%;
+
+  /* Font size */
+  --font-size-base: 16px;
+  --menu-font-size: calc(var(--font-size-base) * 0.875);
+
+  /* Menu */
+  --sidebar: 0 0% 100%;
+  --sidebar-deep: 0 0% 100%;
+  --menu: var(--sidebar);
+
+  /* Header */
+  --header: 0 0% 100%;
+
+  /* Legacy color variables for compatibility */
+  --color-primary: #0960bd;
+  --color-primary-hover: #1a70c9;
+  --color-primary-active: #0850a0;
+  --color-bg-layout: #f0f2f5;
+  --color-bg-container: #ffffff;
+  --color-bg-elevated: #ffffff;
+  --color-bg-sidebar: #001529;
+  --color-bg-header: #ffffff;
+  --color-text-primary: rgba(0, 0, 0, 0.88);
+  --color-text-secondary: rgba(0, 0, 0, 0.65);
+  --color-text-tertiary: rgba(0, 0, 0, 0.45);
+  --color-text-disabled: rgba(0, 0, 0, 0.25);
+  --color-border: #d9d9d9;
+  --color-border-secondary: #f0f0f0;
+  --border-radius: 6px;
+  --border-radius-sm: 4px;
+  --border-radius-lg: 8px;
+  --sidebar-width: 210px;
+  --sidebar-collapsed-width: 64px;
+  --header-height: 48px;
+  --tabbar-height: 32px;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 32px 0 rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.15), 0 18px 56px 16px rgba(0, 0, 0, 0.06);
+  --transition-duration: 0.2s;
+
+  accent-color: var(--primary);
+  color-scheme: light;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
+/* 暗色模式变量 */
+.dark {
+  --background: 0 0% 8%;
+  --background-deep: 0 0% 5%;
+  --foreground: 0 0% 95%;
+
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 95%;
+
+  --popover: 0 0% 8%;
+  --popover-foreground: 0 0% 95%;
+
+  --primary: 212 100% 45%;
+  --primary-foreground: 0 0% 98%;
+
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+
+  --accent: 240 3.7% 15.9%;
+  --accent-dark: 240 3.7% 13%;
+  --accent-darker: 240 3.7% 11%;
+  --accent-lighter: 240 3.7% 18%;
+  --accent-hover: 240 3.7% 20%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 212 100% 45%;
+
+  --sidebar: 0 0% 8%;
+  --sidebar-deep: 0 0% 5%;
+
+  --header: 0 0% 8%;
+
+  /* Legacy dark mode variables */
+  --color-bg-layout: #000000;
+  --color-bg-container: #141414;
+  --color-bg-elevated: #1f1f1f;
+  --color-bg-header: #141414;
+  --color-text-primary: rgba(255, 255, 255, 0.85);
+  --color-text-secondary: rgba(255, 255, 255, 0.65);
+  --color-text-tertiary: rgba(255, 255, 255, 0.45);
+  --color-text-disabled: rgba(255, 255, 255, 0.25);
+  --color-border: #424242;
+  --color-border-secondary: #303030;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 3px 6px -4px rgba(0, 0, 0, 0.48), 0 9px 28px 8px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 32px 0 rgba(0, 0, 0, 0.4), 0 6px 12px -6px rgba(0, 0, 0, 0.6), 0 18px 56px 16px rgba(0, 0, 0, 0.24);
+
+  color-scheme: dark;
 }
 
-#root {
-  min-height: 100vh;
+/* ============================================
+ * 基础样式 - 基于 Vben Admin
+ * ============================================ */
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: hsl(var(--border));
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 0;
+  }
+
+  html {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
+    font-family: var(--font-family);
+    font-size: var(--font-size-base, 16px);
+    font-variation-settings: normal;
+    line-height: 1.15;
+    text-size-adjust: 100%;
+    font-synthesis-weight: none;
+    scroll-behavior: smooth;
+    text-rendering: optimizelegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #root,
+  body,
+  html {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a,
+  a:active,
+  a:hover,
+  a:link,
+  a:visited {
+    text-decoration: none;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    opacity: 1;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+  }
 }
 
-/* Ant Design 按钮优化 */
+/* ============================================
+ * Ant Design 覆盖样式
+ * ============================================ */
+.ant-card {
+  border-radius: var(--border-radius) !important;
+}
+
+.ant-btn {
+  border-radius: var(--border-radius) !important;
+  box-shadow: none !important;
+}
+
+.ant-btn-primary {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
 .ant-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.4) !important;
-  transition: all 0.3s ease;
+  background-color: var(--color-primary-hover) !important;
+  border-color: var(--color-primary-hover) !important;
+  opacity: 0.9;
 }
 
-.ant-btn-primary:active {
-  transform: translateY(0);
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: var(--color-primary) !important;
 }
 
-/* 输入框样式优化 */
-.ant-input-affix-wrapper:focus,
-.ant-input-affix-wrapper-focused {
-  border-color: #8b5cf6 !important;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1) !important;
+/* 暗色模式下的 Ant Design 组件 */
+.dark .ant-layout {
+  background-color: var(--color-bg-layout);
 }
 
-.ant-input:focus {
-  border-color: #8b5cf6 !important;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1) !important;
+.dark .ant-layout-header {
+  background-color: var(--color-bg-header);
 }
 
-/* 自定义滚动条 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.dark .ant-layout-content {
+  background-color: var(--color-bg-layout);
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
+.dark .ant-card {
+  background-color: var(--color-bg-container);
+  border-color: var(--color-border);
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.3);
-  border-radius: 4px;
+.dark .ant-modal-content {
+  background-color: var(--color-bg-container);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.5);
+.dark .ant-drawer-content {
+  background-color: var(--color-bg-container);
+}
+
+.dark .ant-dropdown-menu {
+  background-color: var(--color-bg-elevated);
+}
+
+.dark .ant-table {
+  background-color: var(--color-bg-container);
+}
+
+.dark .ant-input {
+  background-color: var(--color-bg-container);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.dark .ant-select-selector {
+  background-color: var(--color-bg-container) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================
+ * 自定义滚动条 - 基于 Vben Admin
+ * ============================================ */
+/* 只有非 Mac 下才进行调整，Mac 下使用默认滚动条 */
+html:not([data-platform='macOs']) {
+  ::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 0.125rem;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 0.125rem;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+ * 工具类 - 基于 Vben Admin
+ * ============================================ */
+@layer components {
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .flex-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .outline-box {
+    border: 1px solid hsl(var(--border));
+    position: relative;
+    cursor: pointer;
+    border-radius: 0.375rem;
+    padding: 0.25rem;
+  }
+
+  .outline-box::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 20;
+    height: 0;
+    width: 1px;
+    border-radius: 0.125rem;
+    opacity: 0;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+  }
+
+  .outline-box.outline-box-active {
+    border: 2px solid hsl(var(--primary));
+  }
+
+  .outline-box.outline-box-active::after {
+    display: none;
+  }
+
+  .outline-box:not(.outline-box-active):hover::after {
+    border: 2px solid hsl(var(--primary));
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0.25rem;
+    opacity: 1;
+  }
+
+  .vben-link {
+    color: hsl(var(--primary));
+    cursor: pointer;
+  }
+
+  .vben-link:hover {
+    color: hsl(var(--primary) / 0.8);
+  }
+
+  .vben-link:active {
+    color: hsl(var(--primary) / 0.6);
+  }
+
+  .card-box {
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.75rem;
+  }
+
+  .text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+html.invert-mode {
+  filter: invert(1);
+}
+
+html.grayscale-mode {
+  filter: grayscale(1);
+}
+
+/* ============================================
+ * 动画效果 - 基于 Vben Admin
+ * ============================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-fade-slide {
+  animation: fadeSlide 0.3s ease-out forwards;
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.3s ease-out forwards;
+}
+
+.animate-fade-down {
+  animation: fadeDown 0.3s ease-out forwards;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================
+ * 隐藏滚动条
+ * ============================================ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+ * 面包屑对齐修复
+ * ============================================ */
+.ant-breadcrumb {
+  display: flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+
+.ant-breadcrumb ol {
+  display: flex !important;
+  align-items: center !important;
+  width: 100%;
+  margin: 0 !important;
+}
+
+.ant-breadcrumb li {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ant-breadcrumb-separator {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-inline: 4px !important;
+}
+
+.ant-breadcrumb-link {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.ant-breadcrumb-link > div {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* ============================================
+ * Ant Design 覆盖样式 - 基于 Vben Admin
+ * ============================================ */
+.ant-layout {
+  background-color: hsl(var(--background));
+}
+
+.ant-layout-header {
+  background-color: hsl(var(--header));
+}
+
+.ant-layout-content {
+  background-color: hsl(var(--background-deep));
+}
+
+.ant-card {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+  border-radius: var(--radius) !important;
+}
+
+.ant-modal-content {
+  background-color: hsl(var(--card));
+  border-radius: var(--radius) !important;
+}
+
+.ant-drawer-content {
+  background-color: hsl(var(--card));
+}
+
+.ant-dropdown-menu {
+  background-color: hsl(var(--popover));
+  border-radius: var(--radius);
+}
+
+.ant-table {
+  background-color: hsl(var(--card));
+}
+
+.ant-btn {
+  border-radius: var(--radius) !important;
+}
+
+.ant-input {
+  background-color: hsl(var(--input-background));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+  border-radius: var(--radius);
+}
+
+.ant-select-selector {
+  background-color: hsl(var(--input-background)) !important;
+  border-color: hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* 自定义滚动条样式 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent));
+}
+
+/* ============================================
+ * 响应式断点
+ * ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 200px;
+    --sidebar-collapsed-width: 0px;
+  }
+}
+
+/* ============================================
+ * Dashboard 专用样式
+ * ============================================ */
+.dashboard-table .ant-table {
+  background: transparent;
+}
+
+.dashboard-table .ant-table-thead > tr > th {
+  background: hsl(var(--card));
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  font-size: 13px;
+  padding: 12px 16px;
+}
+
+.dashboard-table .ant-table-tbody > tr {
+  transition: all 0.2s ease;
+}
+
+.dashboard-table .ant-table-tbody > tr:hover {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.dashboard-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid hsl(var(--border));
+  padding: 14px 16px;
+}
+
+.dashboard-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+/* ============================================
+ * 打印样式
+ * ============================================ */
+@media print {
+  .ant-layout-sider,
+  .ant-layout-header,
+  .ant-breadcrumb {
+    display: none !important;
+  }
+
+  .ant-layout-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
