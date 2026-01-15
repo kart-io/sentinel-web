@@ -241,8 +241,14 @@ export function useAntdThemeConfig() {
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
       colorBgLayout: isDark ? '#000000' : '#f0f2f5',
       colorBgContainer: isDark ? '#141414' : '#ffffff',
+      colorBgElevated: isDark ? '#1f1f1f' : '#ffffff',
       colorText: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
       colorTextSecondary: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)',
+      colorTextTertiary: isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)',
+      colorBorder: isDark ? '#424242' : '#d9d9d9',
+      colorBorderSecondary: isDark ? '#303030' : '#f0f0f0',
+      colorBgBase: isDark ? '#141414' : '#ffffff',
+      colorTextBase: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
     },
     components: {
       Menu: {
@@ -251,6 +257,7 @@ export function useAntdThemeConfig() {
         darkItemSelectedBg: theme.colorPrimary,
         darkItemColor: 'rgba(255, 255, 255, 0.7)',
         darkItemSelectedColor: '#ffffff',
+        darkItemHoverBg: 'rgba(255, 255, 255, 0.08)',
         itemHeight: 40,
         itemMarginInline: 0,
         itemBorderRadius: 0,
@@ -271,17 +278,63 @@ export function useAntdThemeConfig() {
       Button: {
         borderRadius: theme.radius,
         controlHeight: 32,
+        defaultBg: isDark ? 'transparent' : '#ffffff',
+        defaultBorderColor: isDark ? '#424242' : '#d9d9d9',
+        defaultColor: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
       },
       Input: {
         borderRadius: theme.radius,
+        colorBgContainer: isDark ? '#141414' : '#ffffff',
+        colorBorder: isDark ? '#424242' : '#d9d9d9',
+        colorText: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
+      },
+      Select: {
+        colorBgContainer: isDark ? '#141414' : '#ffffff',
+        colorBgElevated: isDark ? '#1f1f1f' : '#ffffff',
+        colorBorder: isDark ? '#424242' : '#d9d9d9',
+        colorText: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
       },
       Card: {
         borderRadius: theme.radius,
+        colorBgContainer: isDark ? '#141414' : '#ffffff',
+        colorBorderSecondary: isDark ? '#303030' : '#f0f0f0',
       },
       Table: {
         borderRadius: theme.radius,
+        colorBgContainer: isDark ? '#141414' : '#ffffff',
+        colorBorderSecondary: isDark ? '#303030' : '#f0f0f0',
+        colorText: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
+        colorTextHeading: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
+      },
+      Modal: {
+        borderRadius: theme.radius,
+        colorBgElevated: isDark ? '#1f1f1f' : '#ffffff',
+        contentBg: isDark ? '#1f1f1f' : '#ffffff',
+        headerBg: isDark ? '#1f1f1f' : '#ffffff',
+      },
+      Drawer: {
+        colorBgElevated: isDark ? '#1f1f1f' : '#ffffff',
+        colorBgMask: 'rgba(0, 0, 0, 0.45)',
+      },
+      Dropdown: {
+        colorBgElevated: isDark ? '#1f1f1f' : '#ffffff',
+        colorText: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.88)',
+      },
+      Tooltip: {
+        colorBgSpotlight: isDark ? '#1f1f1f' : 'rgba(0, 0, 0, 0.85)',
+        colorTextLightSolid: isDark ? 'rgba(255, 255, 255, 0.85)' : '#ffffff',
+      },
+      Badge: {
+        colorBgContainer: isDark ? '#141414' : '#ffffff',
+      },
+      Avatar: {
+        colorTextPlaceholder: isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.45)',
+      },
+      Tabs: {
+        colorBgContainer: isDark ? '#141414' : '#ffffff',
+        colorBorderSecondary: isDark ? '#303030' : '#f0f0f0',
+        colorText: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)',
       },
     },
-    algorithm: isDark ? undefined : undefined, // 可以在这里添加 antd 的暗色算法
   };
 }

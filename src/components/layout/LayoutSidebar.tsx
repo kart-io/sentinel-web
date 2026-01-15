@@ -101,10 +101,12 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
   const sidebarBg = theme.semiDarkSidebar ? '#001529' : undefined;
 
   // 计算侧边栏 margin-top (混合导航模式下)
-  const sidebarMarginTop = isMixedNav && !app.isMobile ? header.height : 0;
+  // mixed-nav: header (48px) + 顶部菜单 (48px) = 96px
+  const sidebarMarginTop = isMixedNav && !app.isMobile ? header.height + 48 : 0;
 
   // 计算 z-index
-  const sidebarZIndex = app.isMobile ? 1001 : isMixedNav ? 201 : 200;
+  // mixed-nav 模式下，侧边栏应该在顶部菜单下方，所以 z-index 要低于顶部菜单(190)
+  const sidebarZIndex = app.isMobile ? 1001 : isMixedNav ? 100 : 200;
 
   return (
     <>

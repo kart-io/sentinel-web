@@ -552,10 +552,15 @@ html.grayscale-mode {
 
 .ant-layout-header {
   background-color: hsl(var(--header));
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .ant-layout-content {
   background-color: hsl(var(--background-deep));
+}
+
+.ant-layout-sider {
+  background-color: hsl(var(--sidebar));
 }
 
 .ant-card {
@@ -569,7 +574,26 @@ html.grayscale-mode {
   border-radius: var(--radius) !important;
 }
 
+.ant-modal-header {
+  background-color: hsl(var(--card));
+  border-bottom-color: hsl(var(--border));
+}
+
+.ant-modal-footer {
+  background-color: hsl(var(--card));
+  border-top-color: hsl(var(--border));
+}
+
 .ant-drawer-content {
+  background-color: hsl(var(--card));
+}
+
+.ant-drawer-header {
+  background-color: hsl(var(--card));
+  border-bottom-color: hsl(var(--border));
+}
+
+.ant-drawer-body {
   background-color: hsl(var(--card));
 }
 
@@ -578,12 +602,47 @@ html.grayscale-mode {
   border-radius: var(--radius);
 }
 
+.ant-dropdown-menu-item {
+  color: hsl(var(--foreground));
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: hsl(var(--accent));
+}
+
 .ant-table {
   background-color: hsl(var(--card));
+  color: hsl(var(--foreground));
+}
+
+.ant-table-thead > tr > th {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  border-bottom-color: hsl(var(--border));
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: hsl(var(--accent));
 }
 
 .ant-btn {
   border-radius: var(--radius) !important;
+}
+
+.ant-btn-default {
+  background-color: transparent;
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.ant-btn-default:hover {
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary));
 }
 
 .ant-input {
@@ -593,10 +652,345 @@ html.grayscale-mode {
   border-radius: var(--radius);
 }
 
+.ant-input:hover {
+  border-color: hsl(var(--primary));
+}
+
+.ant-input:focus {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
+}
+
+.ant-input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
 .ant-select-selector {
   background-color: hsl(var(--input-background)) !important;
   border-color: hsl(var(--border)) !important;
   border-radius: var(--radius) !important;
+}
+
+.ant-select-dropdown {
+  background-color: hsl(var(--popover));
+}
+
+.ant-select-item {
+  color: hsl(var(--foreground));
+}
+
+.ant-select-item:hover {
+  background-color: hsl(var(--accent));
+}
+
+.ant-select-item-option-selected {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--primary));
+}
+
+.ant-tooltip-inner {
+  background-color: hsl(var(--popover));
+  color: hsl(var(--foreground));
+}
+
+.ant-tooltip-arrow::before {
+  background-color: hsl(var(--popover));
+}
+
+.ant-switch {
+  background-color: hsl(var(--muted));
+}
+
+.ant-switch-checked {
+  background-color: hsl(var(--primary));
+}
+
+.ant-slider-track {
+  background-color: hsl(var(--primary));
+}
+
+.ant-slider-handle {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.ant-radio-button-wrapper {
+  background-color: transparent;
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.ant-radio-button-wrapper:hover {
+  color: hsl(var(--primary));
+}
+
+.ant-radio-button-wrapper-checked {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: white;
+}
+
+.ant-segmented {
+  background-color: hsl(var(--muted));
+}
+
+.ant-segmented-item {
+  color: hsl(var(--foreground));
+}
+
+.ant-segmented-item-selected {
+  background-color: hsl(var(--card));
+  color: hsl(var(--primary));
+}
+
+.ant-badge-count {
+  background-color: #ff4d4f;
+}
+
+.ant-avatar {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.ant-tabs-tab {
+  color: hsl(var(--muted-foreground));
+}
+
+.ant-tabs-tab:hover {
+  color: hsl(var(--foreground));
+}
+
+.ant-tabs-tab-active {
+  color: hsl(var(--primary)) !important;
+}
+
+.ant-tabs-ink-bar {
+  background-color: hsl(var(--primary));
+}
+
+.ant-divider {
+  border-color: hsl(var(--border));
+}
+
+/* Popover */
+.ant-popover-inner {
+  background-color: hsl(var(--popover));
+  color: hsl(var(--foreground));
+}
+
+.ant-popover-arrow::before {
+  background-color: hsl(var(--popover));
+}
+
+/* Message */
+.ant-message-notice-content {
+  background-color: hsl(var(--card));
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-lg);
+}
+
+/* Notification */
+.ant-notification-notice {
+  background-color: hsl(var(--card));
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-lg);
+}
+
+.ant-notification-notice-message {
+  color: hsl(var(--foreground));
+}
+
+.ant-notification-notice-description {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Form */
+.ant-form-item-label > label {
+  color: hsl(var(--foreground));
+}
+
+.ant-form-item-explain-error {
+  color: #ff4d4f;
+}
+
+/* Checkbox */
+.ant-checkbox-wrapper {
+  color: hsl(var(--foreground));
+}
+
+.ant-checkbox-inner {
+  background-color: transparent;
+  border-color: hsl(var(--border));
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+/* Radio */
+.ant-radio-wrapper {
+  color: hsl(var(--foreground));
+}
+
+.ant-radio-inner {
+  background-color: transparent;
+  border-color: hsl(var(--border));
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--primary));
+}
+
+/* DatePicker */
+.ant-picker {
+  background-color: hsl(var(--input-background));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.ant-picker-dropdown {
+  background-color: hsl(var(--popover));
+}
+
+.ant-picker-panel-container {
+  background-color: hsl(var(--popover));
+}
+
+.ant-picker-header {
+  color: hsl(var(--foreground));
+  border-bottom-color: hsl(var(--border));
+}
+
+.ant-picker-cell {
+  color: hsl(var(--foreground));
+}
+
+.ant-picker-cell:hover .ant-picker-cell-inner {
+  background-color: hsl(var(--accent));
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: hsl(var(--primary));
+  color: white;
+}
+
+/* Tag */
+.ant-tag {
+  background-color: hsl(var(--accent));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+/* Alert */
+.ant-alert {
+  background-color: hsl(var(--accent));
+  border-color: hsl(var(--border));
+}
+
+.ant-alert-message {
+  color: hsl(var(--foreground));
+}
+
+/* Progress */
+.ant-progress-text {
+  color: hsl(var(--foreground));
+}
+
+/* Tree */
+.ant-tree {
+  background-color: transparent;
+  color: hsl(var(--foreground));
+}
+
+.ant-tree-node-content-wrapper:hover {
+  background-color: hsl(var(--accent));
+}
+
+.ant-tree-node-selected {
+  background-color: hsl(var(--accent)) !important;
+}
+
+/* Upload */
+.ant-upload {
+  color: hsl(var(--foreground));
+}
+
+.ant-upload-list-item {
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+
+/* Collapse */
+.ant-collapse {
+  background-color: transparent;
+  border-color: hsl(var(--border));
+}
+
+.ant-collapse-item {
+  border-bottom-color: hsl(var(--border));
+}
+
+.ant-collapse-header {
+  color: hsl(var(--foreground));
+}
+
+.ant-collapse-content {
+  color: hsl(var(--muted-foreground));
+  background-color: hsl(var(--card));
+  border-top-color: hsl(var(--border));
+}
+
+/* Pagination */
+.ant-pagination-item {
+  background-color: transparent;
+  border-color: hsl(var(--border));
+}
+
+.ant-pagination-item a {
+  color: hsl(var(--foreground));
+}
+
+.ant-pagination-item:hover {
+  border-color: hsl(var(--primary));
+}
+
+.ant-pagination-item:hover a {
+  color: hsl(var(--primary));
+}
+
+.ant-pagination-item-active {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.ant-pagination-item-active a {
+  color: white;
+}
+
+/* Steps */
+.ant-steps-item-title {
+  color: hsl(var(--foreground));
+}
+
+.ant-steps-item-description {
+  color: hsl(var(--muted-foreground));
+}
+
+.ant-steps-item-icon {
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
 }
 
 /* 自定义滚动条样式 */
