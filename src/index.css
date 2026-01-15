@@ -290,6 +290,31 @@
   border-color: var(--color-border);
 }
 
+.dark .ant-card-head {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-border);
+}
+
+.dark .ant-card-head-title {
+  color: var(--color-text-primary);
+}
+
+.dark .ant-card-body {
+  color: var(--color-text-primary);
+}
+
+.dark .ant-breadcrumb-link {
+  color: var(--color-text-secondary) !important;
+}
+
+.dark .ant-breadcrumb-link:hover {
+  color: var(--color-text-primary) !important;
+}
+
+.dark .ant-breadcrumb-separator {
+  color: var(--color-text-tertiary) !important;
+}
+
 .dark .ant-modal-content {
   background-color: var(--color-bg-container);
 }

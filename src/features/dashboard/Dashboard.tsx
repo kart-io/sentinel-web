@@ -137,11 +137,12 @@ const AnalysisCard = ({
   trendUp
 }: AnalysisCardProps) => (
   <div
-    className="bg-white p-5 transition-all duration-300 hover:shadow-md cursor-pointer group"
+    className="p-5 transition-all duration-300 hover:shadow-md cursor-pointer group"
     style={{
       borderRadius: 'var(--border-radius)',
       boxShadow: 'var(--shadow-sm)',
-      border: '1px solid var(--color-border-secondary)'
+      border: '1px solid var(--color-border-secondary)',
+      backgroundColor: 'var(--color-bg-container)'
     }}
   >
     <div className="flex justify-between items-start mb-4">
