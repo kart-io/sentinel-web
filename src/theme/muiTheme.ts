@@ -3,9 +3,15 @@ import { createTheme, type Theme } from '@mui/material/styles';
 /**
  * 创建 MUI 主题
  * @param mode - 主题模式 ('light' | 'dark')
+ * @param fontSize - 基础字体大小（默认 14px）
+ * @param borderRadius - 圆角大小（默认 6px）
  * @returns MUI Theme 对象
  */
-export const createMuiTheme = (mode: 'light' | 'dark'): Theme => {
+export const createMuiTheme = (
+  mode: 'light' | 'dark',
+  fontSize: number = 14,
+  borderRadius: number = 6
+): Theme => {
   return createTheme({
     palette: {
       mode, // 设置主题模式
@@ -61,41 +67,41 @@ export const createMuiTheme = (mode: 'light' | 'dark'): Theme => {
         'Arial',
         'sans-serif',
       ].join(','),
-      fontSize: 14,
+      fontSize, // 应用字体大小
       h1: {
-        fontSize: '2.5rem',
+        fontSize: `${fontSize * 2.5 / 14}rem`, // 相对于 fontSize 计算
         fontWeight: 600,
       },
       h2: {
-        fontSize: '2rem',
+        fontSize: `${fontSize * 2 / 14}rem`,
         fontWeight: 600,
       },
       h3: {
-        fontSize: '1.75rem',
+        fontSize: `${fontSize * 1.75 / 14}rem`,
         fontWeight: 600,
       },
       h4: {
-        fontSize: '1.5rem',
+        fontSize: `${fontSize * 1.5 / 14}rem`,
         fontWeight: 600,
       },
       h5: {
-        fontSize: '1.25rem',
+        fontSize: `${fontSize * 1.25 / 14}rem`,
         fontWeight: 600,
       },
       h6: {
-        fontSize: '1rem',
+        fontSize: `${fontSize / 14}rem`,
         fontWeight: 600,
       },
     },
     shape: {
-      borderRadius: 6,
+      borderRadius, // 应用圆角大小
     },
     components: {
       MuiButton: {
         styleOverrides: {
           root: {
             textTransform: 'none',
-            borderRadius: 6,
+            borderRadius,
             boxShadow: 'none',
             '&:hover': {
               boxShadow: 'none',
@@ -106,7 +112,7 @@ export const createMuiTheme = (mode: 'light' | 'dark'): Theme => {
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: 6,
+            borderRadius,
             boxShadow: mode === 'dark'
               ? '0 1px 2px 0 rgba(0, 0, 0, 0.5), 0 1px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px 0 rgba(0, 0, 0, 0.3)'
               : '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
@@ -119,7 +125,7 @@ export const createMuiTheme = (mode: 'light' | 'dark'): Theme => {
             backgroundImage: 'none', // 移除 MUI 默认的渐变背景
           },
           rounded: {
-            borderRadius: 6,
+            borderRadius,
           },
         },
       },
@@ -127,7 +133,7 @@ export const createMuiTheme = (mode: 'light' | 'dark'): Theme => {
         styleOverrides: {
           root: {
             '& .MuiOutlinedInput-root': {
-              borderRadius: 6,
+              borderRadius,
             },
           },
         },

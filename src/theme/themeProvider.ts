@@ -32,6 +32,11 @@ interface CSSVariables {
   '--border-radius-sm': string;
   '--border-radius-lg': string;
 
+  // 字体
+  '--font-size-base': string;
+  '--font-size-sm': string;
+  '--font-size-lg': string;
+
   // 尺寸
   '--sidebar-width': string;
   '--sidebar-collapsed-width': string;
@@ -50,7 +55,7 @@ interface CSSVariables {
 /**
  * 亮色主题变量
  */
-const lightThemeVariables = (primaryColor: string, radius: number): Partial<CSSVariables> => ({
+const lightThemeVariables = (primaryColor: string, radius: number, fontSize: number): Partial<CSSVariables> => ({
   '--color-primary': primaryColor,
   '--color-primary-hover': adjustColor(primaryColor, 10),
   '--color-primary-active': adjustColor(primaryColor, -10),
@@ -73,6 +78,10 @@ const lightThemeVariables = (primaryColor: string, radius: number): Partial<CSSV
   '--border-radius-sm': `${Math.max(radius - 2, 2)}px`,
   '--border-radius-lg': `${radius + 2}px`,
 
+  '--font-size-base': `${fontSize}px`,
+  '--font-size-sm': `${fontSize - 2}px`,
+  '--font-size-lg': `${fontSize + 2}px`,
+
   '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
   '--shadow-md': '0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05)',
   '--shadow-lg': '0 12px 32px 0 rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.15), 0 18px 56px 16px rgba(0, 0, 0, 0.06)',
@@ -83,7 +92,7 @@ const lightThemeVariables = (primaryColor: string, radius: number): Partial<CSSV
 /**
  * 暗色主题变量
  */
-const darkThemeVariables = (primaryColor: string, radius: number): Partial<CSSVariables> => ({
+const darkThemeVariables = (primaryColor: string, radius: number, fontSize: number): Partial<CSSVariables> => ({
   '--color-primary': primaryColor,
   '--color-primary-hover': adjustColor(primaryColor, 15),
   '--color-primary-active': adjustColor(primaryColor, -10),
@@ -105,6 +114,10 @@ const darkThemeVariables = (primaryColor: string, radius: number): Partial<CSSVa
   '--border-radius': `${radius}px`,
   '--border-radius-sm': `${Math.max(radius - 2, 2)}px`,
   '--border-radius-lg': `${radius + 2}px`,
+
+  '--font-size-base': `${fontSize}px`,
+  '--font-size-sm': `${fontSize - 2}px`,
+  '--font-size-lg': `${fontSize + 2}px`,
 
   '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.2)',
   '--shadow-md': '0 6px 16px 0 rgba(0, 0, 0, 0.32), 0 3px 6px -4px rgba(0, 0, 0, 0.48), 0 9px 28px 8px rgba(0, 0, 0, 0.2)',
@@ -176,10 +189,10 @@ export function useThemeProvider() {
       isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
 
-    // 应用主题 CSS 变量
+    // 应用主题 CSS 变量（包含字体大小）
     const variables = isDark
-      ? darkThemeVariables(theme.colorPrimary, theme.radius)
-      : lightThemeVariables(theme.colorPrimary, theme.radius);
+      ? darkThemeVariables(theme.colorPrimary, theme.radius, theme.fontSize)
+      : lightThemeVariables(theme.colorPrimary, theme.radius, theme.fontSize);
 
     applyCSSVariables(variables);
 
@@ -190,6 +203,9 @@ export function useThemeProvider() {
       header.height,
       tabbar.height
     );
+
+    // 应用字体大小到 body
+    document.documentElement.style.fontSize = `${theme.fontSize}px`;
 
     // 切换 HTML 的 dark class（用于 Tailwind dark mode）
     if (isDark) {
@@ -206,8 +222,8 @@ export function useThemeProvider() {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = (e: MediaQueryListEvent) => {
       const variables = e.matches
-        ? darkThemeVariables(theme.colorPrimary, theme.radius)
-        : lightThemeVariables(theme.colorPrimary, theme.radius);
+        ? darkThemeVariables(theme.colorPrimary, theme.radius, theme.fontSize)
+        : lightThemeVariables(theme.colorPrimary, theme.radius, theme.fontSize);
       applyCSSVariables(variables);
 
       if (e.matches) {
@@ -219,7 +235,7 @@ export function useThemeProvider() {
 
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, [theme.mode, theme.colorPrimary, theme.radius]);
+  }, [theme.mode, theme.colorPrimary, theme.radius, theme.fontSize]);
 }
 
 /**
@@ -238,6 +254,7 @@ export function useAntdThemeConfig() {
     token: {
       colorPrimary: theme.colorPrimary,
       borderRadius: theme.radius,
+      fontSize: theme.fontSize, // 应用字体大小
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
       colorBgLayout: isDark ? '#000000' : '#f0f2f5',
       colorBgContainer: isDark ? '#141414' : '#ffffff',
@@ -262,7 +279,7 @@ export function useAntdThemeConfig() {
         itemMarginInline: 0,
         itemBorderRadius: 0,
         iconSize: 16,
-        fontSize: 14,
+        fontSize: theme.fontSize, // 应用字体大小
       },
       Layout: {
         siderBg: theme.semiDarkSidebar ? '#001529' : (isDark ? '#141414' : '#001529'),

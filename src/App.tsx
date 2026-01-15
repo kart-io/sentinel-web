@@ -27,8 +27,10 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // 获取当前主题模式
+  // 获取当前主题配置
   const themeMode = useLayoutStore((state) => state.theme.mode);
+  const fontSize = useLayoutStore((state) => state.theme.fontSize);
+  const borderRadius = useLayoutStore((state) => state.theme.radius);
 
   // 根据系统主题和用户设置确定实际主题
   const isDark = useMemo(() => {
@@ -38,10 +40,10 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }, [themeMode]);
 
-  // 动态创建 MUI 主题
+  // 动态创建 MUI 主题（传递字体大小和圆角）
   const muiTheme = useMemo(() => {
-    return createMuiTheme(isDark ? 'dark' : 'light');
-  }, [isDark]);
+    return createMuiTheme(isDark ? 'dark' : 'light', fontSize, borderRadius);
+  }, [isDark, fontSize, borderRadius]);
 
   return (
     <ErrorBoundary>

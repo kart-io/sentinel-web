@@ -553,6 +553,8 @@ html.grayscale-mode {
 .ant-layout-header {
   background-color: hsl(var(--header));
   border-bottom: 1px solid hsl(var(--border));
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .ant-layout-content {

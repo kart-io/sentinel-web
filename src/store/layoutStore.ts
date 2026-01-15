@@ -126,6 +126,7 @@ interface ThemePreferences {
   radius: number;
   semiDarkSidebar: boolean;
   semiDarkHeader: boolean;
+  fontSize: number; // 字体大小 (px)
 }
 
 /**
@@ -214,6 +215,7 @@ const defaultPreferences: LayoutPreferences = {
     radius: 6,
     semiDarkSidebar: true,
     semiDarkHeader: false,
+    fontSize: 14, // 默认字体大小 14px
   },
   transition: {
     enable: true,

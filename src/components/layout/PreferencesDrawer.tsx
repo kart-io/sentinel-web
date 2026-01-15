@@ -287,6 +287,20 @@ const PreferencesDrawer: React.FC<PreferencesDrawerProps> = ({ open, onClose }) 
           />
         </section>
 
+        {/* 字体大小 */}
+        <section>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600 dark:text-gray-400">字体大小</span>
+            <span className="text-xs text-gray-400">{theme.fontSize}px</span>
+          </div>
+          <Slider
+            min={12}
+            max={18}
+            value={theme.fontSize}
+            onChange={(value) => updateTheme({ fontSize: value })}
+          />
+        </section>
+
         <Divider />
 
         {/* 侧边栏设置 */}

@@ -198,7 +198,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
       </div>
 
       {/* 右侧工具栏 */}
-      <div className="flex items-center h-full pr-4 gap-1">
+      <div className="flex items-center h-full gap-1 ml-auto">
         {/* 搜索按钮 */}
         {onSearch && (
           <Tooltip title="搜索 (⌘K)">
@@ -258,7 +258,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
           placement="bottomRight"
           trigger={['hover']}
         >
-          <div className="h-full pl-2 pr-3 flex items-center gap-2 hover:bg-accent cursor-pointer transition-colors rounded-md">
+          <div className="h-full pl-2 pr-1 flex items-center gap-2 hover:bg-accent cursor-pointer transition-colors rounded-md">
             <Avatar size={24} src={user?.avatar} className="bg-primary">
               {user?.username?.charAt(0).toUpperCase() || 'A'}
             </Avatar>
@@ -268,11 +268,14 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
           </div>
         </Dropdown>
 
-        {/* 设置按钮 */}
+        {/* 分隔线 */}
+        <div className="h-6 w-px bg-border mx-1"></div>
+
+        {/* 设置按钮 - 放在最右边 */}
         <Tooltip title="系统设置">
           <div
             onClick={onOpenSettings}
-            className="h-full px-2.5 flex items-center hover:bg-accent cursor-pointer text-muted-foreground transition-colors rounded-md"
+            className="h-full pl-2.5 pr-2 flex items-center hover:bg-accent cursor-pointer text-muted-foreground transition-colors rounded-md"
           >
             <Settings size={16} />
           </div>
