@@ -421,11 +421,26 @@ export const useLayoutComputed = () => {
   const isHeaderMixedNav = state.app.layout === 'header-mixed-nav';
   const isHeaderSidebarNav = state.app.layout === 'header-sidebar-nav';
 
-  // 是否显示侧边栏
-  const showSidebar = !isFullContent && !isHeaderNav && !state.sidebar.hidden;
+  // 是否显示侧边栏（标准 LayoutSidebar 组件）
+  // 只有以下布局模式显示标准侧边栏：sidebar-nav, mixed-nav, header-sidebar-nav
+  // 注意：sidebar-mixed-nav 使用自定义双列渲染，不使用标准 LayoutSidebar
+  const showSidebar =
+    !state.sidebar.hidden &&
+    (isSidebarNav || isMixedNav || isHeaderSidebarNav);
 
   // 是否显示顶部菜单
   const showHeaderMenu = isHeaderNav || isMixedNav || isHeaderMixedNav;
+
+  // 是否为侧边模式（有侧边栏的模式）
+  const isSideMode = isSidebarNav || isMixedNav || isSidebarMixedNav || isHeaderMixedNav || isHeaderSidebarNav;
+
+  // 是否在 Header 显示 Logo（参考 vben-admin 逻辑）
+  // !isSideMode(header-nav, full-content) || isMixedNav || isMobile
+  const showHeaderLogo = !isSideMode || isMixedNav || state.app.isMobile;
+
+  // 是否在 Sidebar 显示 Logo
+  // isSideMode && !isMixedNav (sidebar-nav, sidebar-mixed-nav, header-sidebar-nav, header-mixed-nav)
+  const showSidebarLogo = isSideMode && !isMixedNav;
 
   // 计算侧边栏实际宽度
   const sidebarWidth = state.sidebar.collapsed
@@ -449,6 +464,8 @@ export const useLayoutComputed = () => {
     isHeaderSidebarNav,
     showSidebar,
     showHeaderMenu,
+    showHeaderLogo,
+    showSidebarLogo,
     sidebarWidth,
     contentMarginLeft,
     isDarkMode,

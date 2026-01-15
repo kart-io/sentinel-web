@@ -36,7 +36,6 @@ export const menuConfig: MenuItem[] = [
     key: 'dashboard',
     label: '仪表板',
     icon: <LayoutDashboard size={18} />,
-    path: '/dashboard',
     children: [
       {
         key: '/dashboard',
@@ -56,7 +55,6 @@ export const menuConfig: MenuItem[] = [
     key: 'rag',
     label: 'RAG 知识库',
     icon: <Database size={18} />,
-    path: '/rag',
     children: [
       {
         key: '/rag',
@@ -102,7 +100,6 @@ export const menuConfig: MenuItem[] = [
     key: 'scheduler',
     label: '任务调度',
     icon: <Calendar size={18} />,
-    path: '/scheduler',
     children: [
       {
         key: '/scheduler',
@@ -132,6 +129,12 @@ export const menuConfig: MenuItem[] = [
         label: '布局测试',
         icon: <LayoutDashboard size={16} />,
         path: '/layout-test',
+      },
+      {
+        key: '/layout-modes',
+        label: '布局模式验证',
+        icon: <Activity size={16} />,
+        path: '/layout-modes',
       },
       {
         key: '/system/logs',

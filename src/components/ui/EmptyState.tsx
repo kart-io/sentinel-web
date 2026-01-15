@@ -89,7 +89,7 @@ export function EmptyState({
   title,
   description,
   icon: Icon,
-  iconColor = 'text-gray-400',
+  iconColor = 'text-muted-foreground',
   actionText,
   onAction,
   action,
@@ -102,22 +102,50 @@ export function EmptyState({
   const containerClass = centered ? 'text-center' : '';
 
   return (
-    <div className={`${containerClass} py-12 ${className || ''}`} style={style}>
+    <div
+      className={`${containerClass} py-16 px-4 ${className || ''}`}
+      style={{
+        minHeight: '400px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...style
+      }}
+    >
       {image ? (
         <div className="mb-6">
           <img src={image} alt={title} className="w-48 h-48 mx-auto object-contain opacity-50" />
         </div>
       ) : Icon ? (
         <div className={`mb-6 flex ${centered ? 'justify-center' : ''}`}>
-          <div className={`p-4 rounded-full bg-gray-50 ${iconColor}`}>
+          <div
+            className={`p-4 rounded-full ${iconColor}`}
+            style={{
+              backgroundColor: 'var(--color-border-secondary)',
+              opacity: 0.6
+            }}
+          >
             <Icon size={64} />
           </div>
         </div>
       ) : null}
 
-      <h3 className="text-xl font-semibold text-gray-700 mb-2">{title}</h3>
+      <h3
+        className="text-xl font-semibold mb-2"
+        style={{ color: 'var(--color-text-primary)' }}
+      >
+        {title}
+      </h3>
 
-      {description && <p className="text-gray-500 mb-6">{description}</p>}
+      {description && (
+        <p
+          className="mb-6 max-w-md"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
+          {description}
+        </p>
+      )}
 
       {(action || (actionText && onAction)) && (
         <div className={`flex gap-3 ${centered ? 'justify-center' : ''} mb-4`}>
@@ -125,10 +153,6 @@ export function EmptyState({
             <Button
               type="primary"
               onClick={onAction}
-              style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%)',
-                border: 'none',
-              }}
             >
               {actionText}
             </Button>

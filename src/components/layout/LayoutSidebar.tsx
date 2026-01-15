@@ -47,6 +47,8 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
     isMixedNav,
     isSidebarMixedNav,
     isHeaderMixedNav,
+    isHeaderSidebarNav,
+    showSidebarLogo,
   } = useLayoutComputed();
 
   // 悬停展开状态
@@ -100,13 +102,19 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
   // 确定侧边栏背景色 - 支持半暗模式
   const sidebarBg = theme.semiDarkSidebar ? '#001529' : undefined;
 
-  // 计算侧边栏 margin-top (混合导航模式下)
-  // mixed-nav: header (48px) + 顶部菜单 (48px) = 96px
-  const sidebarMarginTop = isMixedNav && !app.isMobile ? header.height + 48 : 0;
+  // 计算侧边栏 margin-top
+  // sidebar-nav: marginTop = 0 (从顶部开始，与 Header 并排)
+  // mixed-nav: marginTop = header.height + 48 (从顶部一级菜单下方开始)
+  // header-sidebar-nav: marginTop = header.height + 48 (从顶部一级菜单下方开始)
+  // sidebar-mixed-nav: 不使用 LayoutSidebar
+  const sidebarMarginTop = app.isMobile
+    ? 0
+    : (isMixedNav || isHeaderSidebarNav ? header.height + 48 : 0);
 
   // 计算 z-index
+  // 侧边栏的 z-index 应该低于 Header (z-index: 200)
   // mixed-nav 模式下，侧边栏应该在顶部菜单下方，所以 z-index 要低于顶部菜单(190)
-  const sidebarZIndex = app.isMobile ? 1001 : isMixedNav ? 100 : 200;
+  const sidebarZIndex = app.isMobile ? 1001 : isMixedNav ? 100 : 150;
 
   return (
     <>
@@ -134,52 +142,52 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Logo 区域 - 混合导航模式下不显示 */}
-        {!isMixedNav && (
+        {/* Logo 区域 - sidebar-nav, sidebar-mixed-nav, header-sidebar-nav, header-mixed-nav 模式显示 */}
+        {showSidebarLogo && (
           <div
             className={`
-              h-[${header.height}px] flex items-center justify-center relative overflow-hidden
-              transition-all duration-300 shadow-sm border-b
-              ${theme.semiDarkSidebar ? 'bg-[#001529] border-gray-800' : 'bg-inherit border-gray-200'}
+              flex items-center relative overflow-hidden border-b border-border
+              transition-all duration-300
+              ${effectiveCollapsed ? 'justify-center px-2' : 'px-4'}
             `}
-            style={{ height: header.height }}
+            style={{ height: `${header.height}px` }}
           >
-            <div
-              className={`
-                flex items-center gap-4 transition-all duration-300
-                ${effectiveCollapsed ? 'justify-center w-full' : 'w-full px-6'}
-              `}
+            <a
+              href="/"
+              className="flex items-center gap-3 overflow-hidden transition-all duration-300 no-underline w-full hover:opacity-80"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/dashboard';
+              }}
             >
               {effectiveCollapsed ? (
-                collapsedLogo || (
+                // 折叠状态：仅图标
+                <div className="w-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-[#0960bd] rounded-md flex items-center justify-center text-white font-bold text-base shadow-sm hover:shadow-md transition-all">
+                    S
+                  </div>
+                </div>
+              ) : (
+                // 展开状态：图标 + 文字
+                <>
                   <div className="w-8 h-8 flex items-center justify-center shrink-0">
-                    <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                    <div className="w-7 h-7 bg-[#0960bd] rounded-md flex items-center justify-center text-white font-bold text-base shadow-sm hover:shadow-md transition-all">
                       S
                     </div>
                   </div>
-                )
-              ) : (
-                logo || (
-                  <>
-                    <div className="w-8 h-8 flex items-center justify-center shrink-0">
-                      <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                        S
-                      </div>
-                    </div>
-                    <span className="font-bold text-lg text-white tracking-wide whitespace-nowrap opacity-100 transition-opacity duration-300">
-                      Sentinel<span className="text-primary-foreground opacity-90">Admin</span>
-                    </span>
-                  </>
-                )
+                  <span className="font-semibold text-base tracking-wide whitespace-nowrap truncate text-foreground dark:text-white">
+                    Sentinel Admin
+                  </span>
+                </>
               )}
-            </div>
+            </a>
           </div>
         )}
 
         {/* 菜单区域 */}
         <div className="h-full overflow-hidden flex flex-col">
           <Menu
-            theme="dark"
+            theme={theme.mode === 'dark' || theme.mode === 'system' ? 'dark' : 'light'}
             mode="inline"
             selectedKeys={selectedKeys}
             items={menuItems}
@@ -187,7 +195,7 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
             className="border-r-0 font-medium flex-1 overflow-y-auto select-none custom-scrollbar"
             inlineCollapsed={effectiveCollapsed}
             // 手风琴模式 - 只展开一个菜单项
-            {...(navigation.accordion ? { accordion: true } : {})}
+            accordion={navigation.accordion}
             style={{
               paddingTop: isMixedNav ? 8 : 0,
             }}

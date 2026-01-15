@@ -6,6 +6,7 @@ import MUIComponents from '../features/mui-demo/MUIComponents';
 import EnvDemo from '../features/env-demo/EnvDemo';
 import RAGPage from '../features/rag/RAGPage';
 import LayoutTestPage from '../features/layout-demo/LayoutTestPage';
+import LayoutModesTest from '../features/layout-test/LayoutModesTest';
 import { UnderConstruction } from '@/components/common/UnderConstruction';
 import { ProtectedRoute, PublicRoute } from '@/components/common/ProtectedRoute';
 
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: 'layout-test',
         element: <LayoutTestPage />,
+      },
+      {
+        path: 'layout-modes',
+        element: <LayoutModesTest />,
       },
       {
         path: 'system/logs',

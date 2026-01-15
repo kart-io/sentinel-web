@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Empty, Button } from 'antd';
+import { Button } from 'antd';
 import { Construction } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { PageContainer, EmptyContainer } from './PageContainer';
 
 interface UnderConstructionProps {
   title: string;
@@ -10,6 +12,7 @@ interface UnderConstructionProps {
 
 /**
  * 功能开发中占位页面
+ * 使用统一的 EmptyState 组件和容器，确保在页面底部居中显示
  */
 export const UnderConstruction: React.FC<UnderConstructionProps> = ({
   title,
@@ -18,23 +21,20 @@ export const UnderConstruction: React.FC<UnderConstructionProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <Card className="max-w-md w-full text-center shadow-lg">
-        <Empty
-          image={<Construction size={64} className="mx-auto text-primary opacity-60" />}
-          imageStyle={{ height: 80 }}
-          description={
-            <div className="space-y-3">
-              <h2 className="text-2xl font-bold text-foreground">{title}</h2>
-              <p className="text-muted-foreground">{description}</p>
-            </div>
+    <PageContainer>
+      <EmptyContainer>
+        <EmptyState
+          title={title}
+          description={description}
+          icon={Construction}
+          iconColor="text-primary"
+          action={
+            <Button type="primary" onClick={() => navigate('/dashboard')}>
+              返回首页
+            </Button>
           }
-        >
-          <Button type="primary" onClick={() => navigate('/dashboard')}>
-            返回首页
-          </Button>
-        </Empty>
-      </Card>
-    </div>
+        />
+      </EmptyContainer>
+    </PageContainer>
   );
 };

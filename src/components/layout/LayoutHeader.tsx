@@ -33,6 +33,12 @@ interface LayoutHeaderProps {
   onOpenSettings: () => void;
   onSearch?: () => void;
   notificationCount?: number;
+  // header-nav 模式下的菜单
+  headerMenu?: React.ReactNode;
+  // sidebar-mixed-nav 模式下右侧菜单是否可见
+  sidebarMixedRightVisible?: boolean;
+  // sidebar-mixed-nav 模式下内容区域偏移（用于对齐）
+  sidebarMixedOffset?: number;
 }
 
 /**
@@ -53,6 +59,9 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
   onOpenSettings,
   onSearch,
   notificationCount = 0,
+  headerMenu,
+  sidebarMixedRightVisible = true,
+  sidebarMixedOffset,
 }) => {
   const header = useLayoutStore((state) => state.header);
   const sidebar = useLayoutStore((state) => state.sidebar);
@@ -61,7 +70,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
   const tabbar = useLayoutStore((state) => state.tabbar);
   const toggleThemeMode = useLayoutStore((state) => state.toggleThemeMode);
 
-  const { showSidebar, isDarkMode, isMixedNav } = useLayoutComputed();
+  const { showSidebar, isDarkMode, isMixedNav, showHeaderLogo, isHeaderNav, isSidebarMixedNav } = useLayoutComputed();
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
@@ -155,9 +164,21 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
     transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   };
 
-  // 计算左侧边距 (混合导航模式)
-  const headerMarginLeft = isMixedNav && showSidebar
-    ? (sidebar.collapsed ? sidebar.collapsedWidth : sidebar.mixedWidth)
+  const sidebarMixedLeftWidth = sidebar.mixedWidth;
+  const sidebarMixedRightWidth = sidebar.width;
+
+  // 计算左侧边距
+  // sidebar-nav: Header 需要为 Sidebar 留出空间
+  // mixed-nav: Header 为混合侧边栏留出空间
+  // sidebar-mixed-nav: Header 需要为双列侧边栏留出空间（根据右侧菜单显示状态）
+  const headerMarginLeft = !app.isMobile && (showSidebar || isSidebarMixedNav)
+    ? (isMixedNav
+        ? (sidebar.collapsed ? sidebar.collapsedWidth : sidebar.mixedWidth)
+        : isSidebarMixedNav
+          ? (sidebarMixedOffset ?? (sidebarMixedRightVisible
+              ? sidebarMixedLeftWidth + sidebarMixedRightWidth
+              : sidebarMixedLeftWidth))
+          : (sidebar.collapsed ? sidebar.collapsedWidth : sidebar.width))
     : 0;
 
   return (
@@ -166,19 +187,42 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
       className={`
         bg-header px-0 flex items-center justify-between
         ${header.mode === 'fixed' || header.mode === 'auto-scroll' ? 'sticky top-0' : ''}
-        z-[200] shadow-sm border-b border-border
+        shadow-sm border-b border-border
         transition-colors duration-200
       `}
-      style={{
-        ...headerStyles,
-        marginLeft: headerMarginLeft,
-        width: isMixedNav && showSidebar ? `calc(100% - ${headerMarginLeft}px)` : '100%',
-      }}
+        style={{
+          ...headerStyles,
+          marginLeft: headerMarginLeft,
+          width: `calc(100% - ${headerMarginLeft}px)`,
+        }}
     >
       {/* 左侧区域 */}
       <div className="flex items-center h-full">
-        {/* 侧边栏切换按钮 */}
-        {showSidebar && !isMixedNav && (
+        {/* Logo - header-nav, mixed-nav, header-mixed-nav, full-content 模式显示 */}
+        {showHeaderLogo && (
+          <div className={`h-full flex items-center px-4 ${!showSidebar ? 'border-r border-border min-w-[210px]' : ''}`}>
+            <a
+              href="/"
+              className="flex items-center gap-3 no-underline hover:opacity-80 transition-opacity"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/dashboard';
+              }}
+            >
+              <div className="w-8 h-8 flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 bg-[#0960bd] rounded-md flex items-center justify-center text-white font-bold text-base shadow-sm hover:shadow-md transition-all">
+                  S
+                </div>
+              </div>
+              <span className="font-semibold text-base tracking-wide whitespace-nowrap truncate text-foreground dark:text-white">
+                Sentinel Admin
+              </span>
+            </a>
+          </div>
+        )}
+
+        {/* 侧边栏切换按钮 - 仅在有侧边栏且不是 mixed-nav 时显示 */}
+        {showSidebar && !isMixedNav && !showHeaderLogo && (
           <div
             onClick={onToggleSidebar}
             className="h-full flex items-center justify-center px-4 hover:bg-accent cursor-pointer text-muted-foreground transition-colors"
@@ -187,8 +231,15 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
           </div>
         )}
 
-        {/* 面包屑 */}
-        {breadcrumbSettings.enable && (
+        {/* header-nav 模式: 水平菜单直接在 Header 中 */}
+        {isHeaderNav && headerMenu && (
+          <div className="flex-1 h-full flex items-center">
+            {headerMenu}
+          </div>
+        )}
+
+        {/* 其他模式: 面包屑 */}
+        {!isHeaderNav && breadcrumbSettings.enable && (
           <Breadcrumb
             items={breadcrumbs}
             className="flex text-sm text-muted-foreground ml-1 items-center !mb-0"

@@ -1097,3 +1097,18 @@ html.grayscale-mode {
     padding: 0 !important;
   }
 }
+
+/* ============================================
+ * Sidebar Mixed Nav 强制宽度
+ * ============================================ */
+#sidebar-mixed-right-menu {
+  width: 210px !important;
+  min-width: 210px !important;
+  max-width: 210px !important;
+}
+
+/* 强制主内容区域无额外间距 */
+.ant-layout {
+  padding: 0 !important;
+  margin-right: 0 !important;
+}

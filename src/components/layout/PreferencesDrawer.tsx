@@ -1,8 +1,9 @@
 import React from 'react';
-import { Drawer, Divider, Switch, Slider, Tooltip, Radio, Segmented, Button } from 'antd';
+import { Drawer, Divider, Switch, Slider, Tooltip, Radio, Segmented, Button, Alert } from 'antd';
 import { Check, RotateCcw, Moon, Sun, Monitor } from 'lucide-react';
 import {
   useLayoutStore,
+  useLayoutComputed,
   themeColorPresets,
   type LayoutType,
   type ThemeMode,
@@ -122,6 +123,110 @@ const LayoutIcon: React.FC<{ type: string }> = ({ type }) => {
     default:
       return null;
   }
+};
+
+/**
+ * 布局调试信息
+ */
+const LayoutDebugInfo: React.FC = () => {
+  const layout = useLayoutStore((state) => state.app.layout);
+  const {
+    isFullContent,
+    isSidebarNav,
+    isHeaderNav,
+    isMixedNav,
+    isSidebarMixedNav,
+    isHeaderMixedNav,
+    isHeaderSidebarNav,
+    showSidebar,
+    showHeaderMenu,
+  } = useLayoutComputed();
+
+  const layoutMap = {
+    'sidebar-nav': 'isSidebarNav',
+    'header-nav': 'isHeaderNav',
+    'mixed-nav': 'isMixedNav',
+    'sidebar-mixed-nav': 'isSidebarMixedNav',
+    'header-mixed-nav': 'isHeaderMixedNav',
+    'header-sidebar-nav': 'isHeaderSidebarNav',
+    'full-content': 'isFullContent',
+  };
+
+  const currentFlagName = layoutMap[layout];
+  const allFlags = {
+    isFullContent,
+    isSidebarNav,
+    isHeaderNav,
+    isMixedNav,
+    isSidebarMixedNav,
+    isHeaderMixedNav,
+    isHeaderSidebarNav,
+  };
+
+  return (
+    <Alert
+      type="info"
+      showIcon
+      className="mt-3 text-xs"
+      title={
+        <div>
+          <div className="font-semibold mb-1">当前布局状态：</div>
+          <div>
+            Store: <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{layout}</code>
+          </div>
+          <div>
+            计算标志: <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{currentFlagName}</code>
+          </div>
+          <div className="mt-2 text-xs opacity-75">
+            <div>showSidebar: {showSidebar ? '✅' : '❌'}</div>
+            <div>showHeaderMenu: {showHeaderMenu ? '✅' : '❌'}</div>
+          </div>
+          <details className="mt-2">
+            <summary className="cursor-pointer opacity-75">所有标志</summary>
+            <div className="mt-1 space-y-0.5">
+              {Object.entries(allFlags).map(([key, value]) => (
+                <div key={key}>
+                  {key}: {value ? '✅' : '❌'}
+                </div>
+              ))}
+            </div>
+          </details>
+          <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700 space-y-2">
+            <button
+              onClick={() => {
+                console.log('=== 布局调试信息 ===');
+                console.log('Layout:', layout);
+                console.log('Flags:', allFlags);
+                console.log('showSidebar:', showSidebar);
+                console.log('showHeaderMenu:', showHeaderMenu);
+                console.log('如需完整诊断，请在控制台运行诊断脚本');
+              }}
+              className="text-xs text-blue-600 dark:text-blue-400 hover:underline block"
+            >
+              在控制台打印详细信息
+            </button>
+            <button
+              onClick={() => {
+                const sidebar = useLayoutStore.getState().sidebar;
+                console.log('当前 sidebar 配置:', sidebar);
+                if (sidebar.hidden) {
+                  console.log('检测到 sidebar.hidden = true，正在修复...');
+                  useLayoutStore.getState().updateSidebar({ hidden: false });
+                  console.log('已修复！');
+                  window.location.reload();
+                } else {
+                  console.log('sidebar.hidden 正常 (false)');
+                }
+              }}
+              className="text-xs text-green-600 dark:text-green-400 hover:underline block"
+            >
+              修复侧边栏显示问题
+            </button>
+          </div>
+        </div>
+      }
+    />
+  );
 };
 
 /**
@@ -257,6 +362,9 @@ const PreferencesDrawer: React.FC<PreferencesDrawerProps> = ({ open, onClose }) 
         <section>
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">布局模式</h3>
           <LayoutSelector />
+
+          {/* 调试信息 */}
+          <LayoutDebugInfo />
         </section>
 
         <Divider />
