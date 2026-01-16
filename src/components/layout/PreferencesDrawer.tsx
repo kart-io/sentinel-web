@@ -194,12 +194,14 @@ const LayoutDebugInfo: React.FC = () => {
           <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700 space-y-2">
             <button
               onClick={() => {
-                console.log('=== 布局调试信息 ===');
-                console.log('Layout:', layout);
-                console.log('Flags:', allFlags);
-                console.log('showSidebar:', showSidebar);
-                console.log('showHeaderMenu:', showHeaderMenu);
-                console.log('如需完整诊断，请在控制台运行诊断脚本');
+                if (import.meta.env.DEV) {
+                  console.log('=== 布局调试信息 ===');
+                  console.log('Layout:', layout);
+                  console.log('Flags:', allFlags);
+                  console.log('showSidebar:', showSidebar);
+                  console.log('showHeaderMenu:', showHeaderMenu);
+                  console.log('如需完整诊断，请在控制台运行诊断脚本');
+                }
               }}
               className="text-xs text-blue-600 dark:text-blue-400 hover:underline block"
             >
@@ -208,14 +210,22 @@ const LayoutDebugInfo: React.FC = () => {
             <button
               onClick={() => {
                 const sidebar = useLayoutStore.getState().sidebar;
-                console.log('当前 sidebar 配置:', sidebar);
+                if (import.meta.env.DEV) {
+                  console.log('当前 sidebar 配置:', sidebar);
+                }
                 if (sidebar.hidden) {
-                  console.log('检测到 sidebar.hidden = true，正在修复...');
+                  if (import.meta.env.DEV) {
+                    console.log('检测到 sidebar.hidden = true，正在修复...');
+                  }
                   useLayoutStore.getState().updateSidebar({ hidden: false });
-                  console.log('已修复！');
+                  if (import.meta.env.DEV) {
+                    console.log('已修复！');
+                  }
                   window.location.reload();
                 } else {
-                  console.log('sidebar.hidden 正常 (false)');
+                  if (import.meta.env.DEV) {
+                    console.log('sidebar.hidden 正常 (false)');
+                  }
                 }
               }}
               className="text-xs text-green-600 dark:text-green-400 hover:underline block"

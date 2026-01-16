@@ -113,10 +113,10 @@
   --border-radius: 6px;
   --border-radius-sm: 4px;
   --border-radius-lg: 8px;
-  --sidebar-width: 210px;
-  --sidebar-collapsed-width: 64px;
-  --header-height: 48px;
-  --tabbar-height: 32px;
+  --sidebar-width: 224px;
+  --sidebar-collapsed-width: 60px;
+  --header-height: 50px;
+  --tabbar-height: 38px;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
   --shadow-md: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 12px 32px 0 rgba(0, 0, 0, 0.1), 0 6px 12px -6px rgba(0, 0, 0, 0.15), 0 18px 56px 16px rgba(0, 0, 0, 0.06);
@@ -1044,7 +1044,7 @@ html.grayscale-mode {
  * ============================================ */
 @media (max-width: 768px) {
   :root {
-    --sidebar-width: 200px;
+    --sidebar-width: 224px;
     --sidebar-collapsed-width: 0px;
   }
 }
@@ -1102,9 +1102,9 @@ html.grayscale-mode {
  * Sidebar Mixed Nav 强制宽度
  * ============================================ */
 #sidebar-mixed-right-menu {
-  width: 210px !important;
-  min-width: 210px !important;
-  max-width: 210px !important;
+  width: 224px !important;
+  min-width: 224px !important;
+  max-width: 224px !important;
 }
 
 /* 强制主内容区域无额外间距 */

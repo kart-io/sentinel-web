@@ -365,11 +365,6 @@ export default function MainLayout() {
 
   const contentMarginLeft = getContentMarginLeft();
 
-  // 调试：输出 marginLeft
-  console.log('🔍 Content marginLeft:', contentMarginLeft, 'px');
-  console.log('🔍 isSidebarMixedNav:', isSidebarMixedNav);
-  console.log('🔍 sidebarMixedRightVisible:', sidebarMixedRightVisible);
-
   // 计算顶部额外高度
   const getTopExtraHeight = () => {
     let extra = 0;
@@ -569,7 +564,6 @@ export default function MainLayout() {
             {sidebarMixedRightVisible && (
               <div
                 id="sidebar-mixed-right-menu"
-                className="border-r border-border"
                 ref={sidebarMixedRightRef}
                 style={{
                   position: 'fixed',
@@ -581,11 +575,10 @@ export default function MainLayout() {
                   height: '100vh',
                   overflowY: 'auto',
                   overflowX: 'hidden',
-                  backgroundColor: 'yellow',  // 改为黄色
+                  backgroundColor: isDarkMode ? 'rgb(26, 26, 26)' : '#ffffff',
                   zIndex: 90,
                   transition: 'all 0.3s',
                   boxSizing: 'border-box',
-                  borderRight: '5px solid green',  // 添加绿色右边框，显示菜单右边缘
                   flex: `0 0 ${sidebarMixedRightWidth}px`,
                 }}
               >
@@ -635,9 +628,6 @@ export default function MainLayout() {
           style={{
             marginLeft: `${contentMarginLeft}px`,
             marginTop: `${header.height + getTopExtraHeight()}px`,
-            borderLeft: '5px solid blue',  // 添加蓝色边框，显示左边缘
-            paddingLeft: 0,  // 强制移除 padding
-            marginRight: 0,  // 强制移除右边距
           }}
         >
           {/* Tabbar */}
@@ -661,8 +651,8 @@ export default function MainLayout() {
           <Content
             className="min-h-screen transition-all"
             style={{
-              backgroundColor: 'red',  // 临时改为红色
-              padding: 0,  // 移除所有 padding
+              backgroundColor: isDarkMode ? 'rgb(10, 10, 10)' : 'rgb(248, 250, 252)',
+              padding: 0,
             }}
           >
             <div className={transition.enable ? 'animate-fade-in' : ''}>

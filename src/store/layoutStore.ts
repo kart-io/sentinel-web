@@ -171,8 +171,8 @@ const defaultPreferences: LayoutPreferences = {
     locale: 'zh-CN',
   },
   sidebar: {
-    width: 210,
-    collapsedWidth: 64,
+    width: 224,
+    collapsedWidth: 60,
     collapsed: false,
     expandOnHover: true,
     mixedWidth: 80,
@@ -180,13 +180,13 @@ const defaultPreferences: LayoutPreferences = {
   },
   header: {
     enable: true,
-    height: 48,
+    height: 50,
     mode: 'fixed',
     menuAlign: 'start',
   },
   tabbar: {
     enable: true,
-    height: 32,
+    height: 38,
     styleType: 'chrome',
     keepAlive: true,
     persist: true,

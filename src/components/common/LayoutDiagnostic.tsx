@@ -56,7 +56,9 @@ const LayoutDiagnostic: React.FC = () => {
   };
 
   const fixSidebarHidden = () => {
-    console.log('修复 sidebar.hidden...');
+    if (import.meta.env.DEV) {
+      console.log('修复 sidebar.hidden...');
+    }
     updateSidebar({ hidden: false });
     setTimeout(() => {
       runDiagnostics();
