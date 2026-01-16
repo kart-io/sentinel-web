@@ -9,8 +9,6 @@ interface LayoutSidebarProps {
   menuItems: MenuProps['items'];
   selectedKeys: string[];
   onMenuClick: MenuProps['onClick'];
-  logo?: React.ReactNode;
-  collapsedLogo?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -28,8 +26,6 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
   menuItems,
   selectedKeys,
   onMenuClick,
-  logo,
-  collapsedLogo,
   className = '',
   style = {},
 }) => {
@@ -37,7 +33,6 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
   const theme = useLayoutStore((state) => state.theme);
   const app = useLayoutStore((state) => state.app);
   const header = useLayoutStore((state) => state.header);
-  const navigation = useLayoutStore((state) => state.navigation);
   const updateSidebar = useLayoutStore((state) => state.updateSidebar);
 
   const {
@@ -48,6 +43,7 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
     isSidebarMixedNav,
     isHeaderMixedNav,
     isHeaderSidebarNav,
+    isSideMode,
     showSidebarLogo,
   } = useLayoutComputed();
 
@@ -102,19 +98,27 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
   // 确定侧边栏背景色 - 支持半暗模式
   const sidebarBg = theme.semiDarkSidebar ? '#001529' : undefined;
 
-  // 计算侧边栏 margin-top
+  // 计算侧边栏 margin-top (参考 vben-admin)
   // sidebar-nav: marginTop = 0 (从顶部开始，与 Header 并排)
-  // mixed-nav: marginTop = header.height + 48 (从顶部一级菜单下方开始)
-  // header-sidebar-nav: marginTop = header.height + 48 (从顶部一级菜单下方开始)
+  // mixed-nav: marginTop = header.height (50px, 从 Header 下方开始)
+  // header-sidebar-nav: marginTop = header.height (50px, 从顶部通栏下方开始)
   // sidebar-mixed-nav: 不使用 LayoutSidebar
   const sidebarMarginTop = app.isMobile
     ? 0
-    : (isMixedNav || isHeaderSidebarNav ? header.height + 48 : 0);
+    : (isMixedNav || isHeaderSidebarNav ? header.height : 0);
 
-  // 计算 z-index
-  // 侧边栏的 z-index 应该低于 Header (z-index: 200)
-  // mixed-nav 模式下，侧边栏应该在顶部菜单下方，所以 z-index 要低于顶部菜单(190)
-  const sidebarZIndex = app.isMobile ? 1001 : isMixedNav ? 100 : 150;
+  // 计算 z-index (参考 vben-admin 层级系统)
+  // Base: 200
+  // mixed-nav Sidebar: 202 (高于 Header)
+  // 普通 Sidebar: 201
+  // header-nav: 199 (无侧边栏模式)
+  const sidebarZIndex = app.isMobile
+    ? 1001
+    : isMixedNav
+      ? 202
+      : isSideMode
+        ? 201
+        : 199;
 
   return (
     <>
@@ -128,7 +132,7 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
         className={`
           !fixed left-0 top-0 bottom-0 h-full overflow-hidden
           transition-all duration-300 ease-in-out
-          ${isHovering && sidebar.collapsed ? 'shadow-2xl' : 'shadow-lg'}
+          ${isHovering && sidebar.collapsed ? 'shadow-md' : 'shadow-sm'}
           ${className}
         `}
         style={{
@@ -194,8 +198,6 @@ const LayoutSidebar: React.FC<LayoutSidebarProps> = ({
             onClick={onMenuClick}
             className="border-r-0 font-medium flex-1 overflow-y-auto select-none custom-scrollbar"
             inlineCollapsed={effectiveCollapsed}
-            // 手风琴模式 - 只展开一个菜单项
-            accordion={navigation.accordion}
             style={{
               paddingTop: isMixedNav ? 8 : 0,
             }}

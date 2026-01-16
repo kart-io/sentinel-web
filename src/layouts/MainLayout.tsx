@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useLayoutEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useLayoutEffect, useRef, useMemo } from 'react';
 import { Layout, ConfigProvider, Menu, Button, Tooltip } from 'antd';
 import type { MenuProps } from 'antd';
 import { Home, Settings, LogOut } from 'lucide-react';
@@ -39,6 +39,7 @@ export default function MainLayout() {
   const { user, logout } = useAuthStore();
 
   // 布局状态
+  const app = useLayoutStore((state) => state.app);
   const sidebar = useLayoutStore((state) => state.sidebar);
   const header = useLayoutStore((state) => state.header);
   const tabbar = useLayoutStore((state) => state.tabbar);
@@ -285,6 +286,20 @@ export default function MainLayout() {
     navigate('/login', { replace: true });
   };
 
+  // 计算 Header wrapper 的定位样式 (参考 vben-admin)
+  // 必须在任何条件返回之前调用 hooks
+  const headerWrapperStyle = useMemo(() => {
+    // mixed-nav, header-nav, header-sidebar-nav: left=0, width=100%
+    // sidebar-nav: left=sidebarWidth, width=calc(100% - sidebarWidth)
+    const isSidebarNav = app.layout === 'sidebar-nav';
+    const sidebarWidth = sidebar.collapsed ? sidebar.collapsedWidth : sidebar.width;
+
+    return {
+      left: isSidebarNav && !app.isMobile ? `${sidebarWidth}px` : 0,
+      width: isSidebarNav && !app.isMobile ? `calc(100% - ${sidebarWidth}px)` : '100%',
+    };
+  }, [app.layout, app.isMobile, sidebar.collapsed, sidebar.width, sidebar.collapsedWidth]);
+
   // ============= 布局模式: Full Content =============
   if (isFullContent) {
     return (
@@ -337,6 +352,7 @@ export default function MainLayout() {
         ? sidebarMixedRightRef.current?.getBoundingClientRect().width ?? 0
         : 0;
       const total = leftWidth + rightWidth;
+
       if (total > 0) setSidebarMixedMeasuredWidth(total);
     };
 
@@ -345,6 +361,8 @@ export default function MainLayout() {
     return () => window.removeEventListener('resize', measure);
   }, [isSidebarMixedNav, sidebarMixedRightVisible, sidebarMixedLeftWidth, sidebarMixedRightWidth]);
 
+  // 计算 sidebar-mixed-nav 的总宽度
+  // 使用实际测量值，如果没有则使用配置值（不需要加 border，因为 box-sizing: border-box 已包含）
   const sidebarMixedOffset =
     sidebarMixedMeasuredWidth ??
     (sidebarMixedRightVisible
@@ -384,8 +402,11 @@ export default function MainLayout() {
       >
         {/* ============= Header (fixed 定位) ============= */}
         <div
-          className="fixed top-0 left-0 right-0 z-[200]"
-          style={{ height: `${header.height}px` }}
+          className="fixed top-0 z-[200] transition-all duration-300"
+          style={{
+            height: `${header.height}px`,
+            ...headerWrapperStyle,
+          }}
         >
           <LayoutHeader
             breadcrumbs={getBreadcrumbs()}
@@ -417,10 +438,9 @@ export default function MainLayout() {
         {/* ============= Mixed-Nav: 顶部一级菜单 ============= */}
         {isMixedNav && (
           <div
-            className="fixed left-0 right-0 z-[190] border-b border-border transition-all"
+            className="fixed left-0 right-0 z-[190] border-b border-border transition-all bg-header"
             style={{
               top: `${header.height}px`,
-              backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
             }}
           >
             <Menu
@@ -428,10 +448,9 @@ export default function MainLayout() {
               selectedKeys={[selectedTopMenu]}
               items={topLevelMenuItems}
               onClick={handleTopMenuClick}
-              className="border-none"
+              className="border-none bg-header"
               style={{
                 lineHeight: '48px',
-                backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
               }}
             />
           </div>
@@ -440,10 +459,9 @@ export default function MainLayout() {
         {/* ============= Header-Mixed-Nav: 顶部双行菜单 ============= */}
         {isHeaderMixedNav && (
           <div
-            className="fixed left-0 right-0 z-[190]"
+            className="fixed left-0 right-0 z-[190] bg-header"
             style={{
               top: `${header.height}px`,
-              backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
             }}
           >
             {/* 第一行: 一级菜单 */}
@@ -455,10 +473,9 @@ export default function MainLayout() {
                 selectedKeys={[selectedTopMenu]}
                 items={topLevelMenuItems}
                 onClick={handleTopMenuClick}
-                className="border-none"
+                className="border-none bg-header"
                 style={{
                   lineHeight: '44px',
-                  backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
                 }}
               />
             </div>
@@ -469,10 +486,9 @@ export default function MainLayout() {
                 selectedKeys={[location.pathname]}
                 items={getSubMenu(selectedTopMenu, menuConfig)}
                 onClick={handleMenuClick}
-                className="border-none"
+                className="border-none bg-sidebar-deep"
                 style={{
                   lineHeight: '44px',
-                  backgroundColor: isDarkMode ? 'rgb(26, 26, 26)' : '#fafafa',
                 }}
               />
             </div>
@@ -482,10 +498,9 @@ export default function MainLayout() {
         {/* ============= Header-Sidebar-Nav: 顶部通栏一级菜单 + 侧边二级菜单 ============= */}
         {isHeaderSidebarNav && (
           <div
-            className="fixed left-0 right-0 z-[190] border-b border-border"
+            className="fixed left-0 right-0 z-[190] border-b border-border bg-header"
             style={{
               top: `${header.height}px`,
-              backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
             }}
           >
             <Menu
@@ -493,10 +508,9 @@ export default function MainLayout() {
               selectedKeys={[selectedTopMenu]}
               items={topLevelMenuItems}
               onClick={handleTopMenuClick}
-              className="border-none"
+              className="border-none bg-header"
               style={{
                 lineHeight: '48px',
-                backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
               }}
             />
           </div>
@@ -509,25 +523,24 @@ export default function MainLayout() {
             <Sider
               width={sidebarMixedLeftWidth}
               collapsed={false}
-              className="fixed h-screen overflow-y-auto overflow-x-hidden border-r border-border transition-all z-[100]"
+              className="fixed h-screen overflow-y-auto overflow-x-hidden border-r border-border transition-all z-[101] bg-sidebar"
               ref={sidebarMixedLeftRef}
               style={{
                 top: 0,
+                left: 0,
                 height: '100vh',
-                backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
                 width: `${sidebarMixedLeftWidth}px`,
                 minWidth: `${sidebarMixedLeftWidth}px`,
                 maxWidth: `${sidebarMixedLeftWidth}px`,
                 flex: `0 0 ${sidebarMixedLeftWidth}px`,
+                boxSizing: 'border-box',
               }}
             >
               {/* Logo 区域 - 仅图标 */}
               <div
-                className="flex items-center justify-center relative overflow-hidden transition-all duration-300 border-b"
+                className="flex items-center justify-center relative overflow-hidden transition-all duration-300 border-b border-border bg-sidebar"
                 style={{
                   height: `${header.height}px`,
-                  backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
-                  borderColor: isDarkMode ? '#0f1419' : '#e5e7eb',
                 }}
               >
                 <a
@@ -553,10 +566,7 @@ export default function MainLayout() {
                 onClick={handleSidebarTopMenuClick}
                 inlineIndent={0}
                 theme={isDarkMode ? 'dark' : 'light'}
-                className="border-none [&_.ant-menu-item]:!flex [&_.ant-menu-item]:!items-center [&_.ant-menu-item]:!justify-center [&_.ant-menu-item]:!mx-2 [&_.ant-menu-item]:!my-1 [&_.ant-menu-item]:!rounded-md [&_.ant-menu-item]:!h-12 [&_.ant-menu-item]:!leading-[48px]"
-                style={{
-                  backgroundColor: isDarkMode ? 'rgb(20, 20, 20)' : '#fff',
-                }}
+                className="border-none bg-sidebar [&_.ant-menu-item]:!flex [&_.ant-menu-item]:!items-center [&_.ant-menu-item]:!justify-center [&_.ant-menu-item]:!mx-2 [&_.ant-menu-item]:!my-1 [&_.ant-menu-item]:!rounded-md [&_.ant-menu-item]:!h-12 [&_.ant-menu-item]:!leading-[48px]"
               />
             </Sider>
 
@@ -565,8 +575,8 @@ export default function MainLayout() {
               <div
                 id="sidebar-mixed-right-menu"
                 ref={sidebarMixedRightRef}
+                className="fixed bg-sidebar-deep"
                 style={{
-                  position: 'fixed',
                   left: `${sidebarMixedLeftWidth}px`,
                   top: 0,
                   width: `${sidebarMixedRightWidth}px`,
@@ -575,20 +585,16 @@ export default function MainLayout() {
                   height: '100vh',
                   overflowY: 'auto',
                   overflowX: 'hidden',
-                  backgroundColor: isDarkMode ? 'rgb(26, 26, 26)' : '#ffffff',
-                  zIndex: 90,
+                  zIndex: 101,
                   transition: 'all 0.3s',
                   boxSizing: 'border-box',
-                  flex: `0 0 ${sidebarMixedRightWidth}px`,
                 }}
               >
                 {/* Logo 文字区域 */}
                 <div
-                  className="flex items-center px-4 relative overflow-hidden transition-all duration-300 border-b"
+                  className="flex items-center px-4 relative overflow-hidden transition-all duration-300 border-b border-border bg-sidebar-deep"
                   style={{
                     height: `${header.height}px`,
-                    backgroundColor: isDarkMode ? 'rgb(26, 26, 26)' : '#ffffff',
-                    borderColor: isDarkMode ? '#0f1419' : '#e5e7eb',
                   }}
                 >
                   <span className={`font-semibold text-base tracking-wide whitespace-nowrap truncate ${isDarkMode ? 'text-white' : 'text-foreground'}`}>
@@ -603,10 +609,7 @@ export default function MainLayout() {
                   onClick={handleMenuClick}
                   inlineIndent={16}
                   theme={isDarkMode ? 'dark' : 'light'}
-                  className="border-none"
-                  style={{
-                    backgroundColor: isDarkMode ? 'rgb(26, 26, 26)' : '#ffffff',
-                  }}
+                  className="border-none bg-sidebar-deep"
                 />
               </div>
             )}
@@ -632,7 +635,7 @@ export default function MainLayout() {
         >
           {/* Tabbar */}
           {tabbar.enable && (
-            <div className="sticky top-0 z-[50]">
+            <div className="sticky top-0 z-[180]">
               <TabsView
                 activeKey={location.pathname}
                 tabs={tabs}

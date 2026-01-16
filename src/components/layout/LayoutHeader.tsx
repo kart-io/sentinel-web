@@ -70,7 +70,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
   const tabbar = useLayoutStore((state) => state.tabbar);
   const toggleThemeMode = useLayoutStore((state) => state.toggleThemeMode);
 
-  const { showSidebar, isDarkMode, isMixedNav, showHeaderLogo, isHeaderNav, isSidebarMixedNav } = useLayoutComputed();
+  const { showSidebar, isDarkMode, isMixedNav, showHeaderLogo, isHeaderNav, isSidebarMixedNav, isHeaderMixedNav, isHeaderSidebarNav } = useLayoutComputed();
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
@@ -168,10 +168,11 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
   const sidebarMixedRightWidth = sidebar.width;
 
   // 计算左侧边距
-  // sidebar-nav: Header 需要为 Sidebar 留出空间
+  // 注意：sidebar-nav 模式下，Header 的定位由 MainLayout 的 wrapper 控制，这里不需要 marginLeft
   // mixed-nav: Header 为混合侧边栏留出空间
   // sidebar-mixed-nav: Header 需要为双列侧边栏留出空间（根据右侧菜单显示状态）
-  const headerMarginLeft = !app.isMobile && (showSidebar || isSidebarMixedNav)
+  const isSidebarNav = app.layout === 'sidebar-nav';
+  const headerMarginLeft = !app.isMobile && !isSidebarNav && (showSidebar || isSidebarMixedNav)
     ? (isMixedNav
         ? (sidebar.collapsed ? sidebar.collapsedWidth : sidebar.mixedWidth)
         : isSidebarMixedNav
@@ -186,14 +187,17 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = ({
       ref={headerRef}
       className={`
         bg-header px-0 flex items-center justify-between
-        ${header.mode === 'fixed' || header.mode === 'auto-scroll' ? 'sticky top-0' : ''}
-        shadow-sm border-b border-border
+        ${!isHeaderNav && !isMixedNav && !isHeaderMixedNav && !isHeaderSidebarNav ? 'shadow-sm border-b border-border' : 'border-b border-border'}
         transition-colors duration-200
       `}
         style={{
-          ...headerStyles,
-          marginLeft: headerMarginLeft,
-          width: `calc(100% - ${headerMarginLeft}px)`,
+          height: header.height,
+          lineHeight: `${header.height}px`,
+          transform: isHidden ? `translateY(-${header.height + (tabbar.enable ? tabbar.height : 0)}px)` : 'translateY(0)',
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          // sidebar-nav 模式下，定位由 wrapper 控制，Header 占满 wrapper 宽度
+          marginLeft: isSidebarNav ? 0 : headerMarginLeft,
+          width: isSidebarNav ? '100%' : `calc(100% - ${headerMarginLeft}px)`,
         }}
     >
       {/* 左侧区域 */}

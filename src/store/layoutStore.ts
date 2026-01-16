@@ -248,6 +248,8 @@ interface LayoutActions {
   toggleBreadcrumb: () => void;
   // 切换页脚显示
   toggleFooter: () => void;
+  // 更新应用设置
+  updateApp: (app: Partial<LayoutPreferences['app']>) => void;
   // 更新侧边栏设置
   updateSidebar: (sidebar: Partial<SidebarPreferences>) => void;
   // 更新 Header 设置
@@ -371,6 +373,12 @@ export const useLayoutStore = create<LayoutState>()(
         }));
       },
 
+      updateApp: (app) => {
+        set((state) => ({
+          app: { ...state.app, ...app },
+        }));
+      },
+
       updateHeader: (header) => {
         set((state) => ({
           header: { ...state.header, ...header },
@@ -462,6 +470,7 @@ export const useLayoutComputed = () => {
     isSidebarMixedNav,
     isHeaderMixedNav,
     isHeaderSidebarNav,
+    isSideMode,
     showSidebar,
     showHeaderMenu,
     showHeaderLogo,
